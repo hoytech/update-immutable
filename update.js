@@ -1,18 +1,8 @@
 /*
-React-compatible data-structure update utility"
+React-compatible data-structure update utility
 
 (C) 2016 Doug Hoyte
 2-clause BSD license
-*/
-
-/*
-This is a re-implementation of react's update function (https://facebook.github.io/react/docs/update.html)
-with the following differences:
-
-  * Simple recursive implementation without dependencies
-  * Implements the $unset command which react refuses to merge (https://github.com/facebook/react/pull/2362/)
-  * $unshift doesn't reverse the list (works like perl's unshift)
-  * Supports auto-vivification: https://en.wikipedia.org/wiki/Autovivification
 */
 
 
