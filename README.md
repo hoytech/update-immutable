@@ -10,7 +10,7 @@ This is a re-implementation of [react's update function](https://facebook.github
 * **Implements `$unset`**
   The react team [refuses to merge](https://github.com/facebook/react/pull/2362/) this functionality for some pretty dubious reasons. `$unset` is important for several use-cases.
 
-* **unshift` doesn't reverse**
+* **unshift doesn't reverse**
   The react version of `$unshift` unshifts each element in a loop, thereby reversing the provided list. This version fixes that bug and makes it work like [perl's unshift](http://perldoc.perl.org/functions/unshift.html).
 
 * **Supports auto-vivification**
