@@ -1,0 +1,11 @@
+{
+  "name": "update-immutable",
+  "version": "1.0.0",
+  "description": "React-compatible data-structure update utility",
+  "main": "update.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Doug Hoyte",
+  "license": "BSD-2-Clause"
+}
