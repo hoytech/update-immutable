@@ -2,19 +2,18 @@
   "name": "update-immutable",
   "version": "1.0.0",
   "description": "React-compatible data-structure update utility",
-  "main": "update.js",
+  "main": "lib/update",
   "scripts": {
-    "test": "npm run build && mocha --ui tdd",
+    "build": "node node_modules/babel-cli/bin/babel.js update.js --out-dir lib",
+    "test": "nodeunit test.js"
   },
   "author": "Doug Hoyte",
   "license": "BSD-2-Clause",
-
   "devDependencies": {
-    "mocha": "2.1.0",
-    "better-assert": "1.0.1",
-    "deep-equal": "1.0.0",
+    "babel-cli": "6.4.5",
+    "babel-preset-es2015": "^6.9.0",
+    "nodeunit": "^0.9.1"
   },
-
   "repository": {
     "type": "git",
     "url": "git://github.com/hoytech/update-immutable.git"
@@ -22,7 +21,7 @@
   "keywords": [
     "update",
     "immutable",
-    "react",
+    "react"
   ],
   "homepage": "https://github.com/hoytech/update-immutable"
 }
