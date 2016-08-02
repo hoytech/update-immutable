@@ -1,4 +1,4 @@
-var update = require("./dist/update").default;
+var update = require("../dist/update").default;
 
 
 function clone(a) {
