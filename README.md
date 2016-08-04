@@ -46,9 +46,9 @@ This module is mostly compatible with the react version except for the following
 
   This module is primarily intended for transferring incremental updates between browsers and server-side web apps. For this use case, `$apply` is not possible since functions cannot be serialised. If there is interest we may eventually implement `$apply` (pull requests welcome).
 
-* **`$unset` behaviour**
+* **`$unshift` behaviour**
 
-  As described above, when passing multiple items in a single `$unset` update, the order of the items is preserved, unlike react which reverses the list.
+  As described above, when passing multiple items in a single `$unshift` update, the order of the items is preserved, unlike react which reverses the list.
 
 
 ## Server-side
