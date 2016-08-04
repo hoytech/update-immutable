@@ -22,7 +22,8 @@
   "keywords": [
     "update",
     "immutable",
-    "react"
+    "react",
+    "perl"
   ],
   "homepage": "https://github.com/hoytech/update-immutable"
 }
