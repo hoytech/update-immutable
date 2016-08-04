@@ -3,7 +3,7 @@
 
 ## Description
 
-This is a re-implementation of [react's update function](https://facebook.github.io/react/docs/update.html) with the following differences:
+This is a mostly-compatible re-implementation of [react's update function](https://facebook.github.io/react/docs/update.html).
 
 
 ## Usage (ES6)
@@ -19,6 +19,8 @@ This is a re-implementation of [react's update function](https://facebook.github
 
 ## Features
 
+The following new features/bugfixes have been implemented:
+
 * **Simple recursive implementation without dependencies**
 
   The original version depends on react.
@@ -27,13 +29,26 @@ This is a re-implementation of [react's update function](https://facebook.github
 
   The react team [refuses to merge](https://github.com/facebook/react/pull/2362/) this functionality for some pretty dubious reasons. `$unset` is important for several use-cases.
 
-* **unshift doesn't reverse**
+* **`$unshift` doesn't reverse**
 
   The react version of `$unshift` unshifts each element in a loop, thereby reversing the provided list. This version fixes that bug and makes it work like [perl's unshift](http://perldoc.perl.org/functions/unshift.html).
 
 * **Supports auto-vivification**
 
   [Auto-vivification](https://en.wikipedia.org/wiki/Autovivification) allows you to modify a nested data structure even if the nesting data-structures don't yet exist. They will be created so as to satisfy the update. This simplifies many use-cases, for example you don't need to maintain an initial-state skeleton.
+
+
+## Incompatibilities
+
+This module is mostly compatible with the react version except for the following notes:
+
+* **Doesn't implement `$apply`**
+
+  This module is primarily intended for transferring incremental updates between browsers and server-side web apps. For this use case, `$apply` is not possible since functions cannot be serialised. If there is interest we may eventually implement `$apply` (pull requests welcome).
+
+* **`$unset` behaviour**
+
+  As described above, when passing multiple items in a single `$unset` update, the order of the items is preserved, unlike react which reverses the list.
 
 
 ## Server-side
