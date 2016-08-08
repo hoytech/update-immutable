@@ -27,7 +27,7 @@ The following new features/bugfixes have been implemented:
 
 * **Implements `$unset`**
 
-  The react team [refuses to merge](https://github.com/facebook/react/pull/2362/) this functionality for some pretty dubious reasons. `$unset` is important for several use-cases.
+  The react team [refuses to merge](https://github.com/facebook/react/pull/2362/) this functionality. `$unset` is important for several use-cases, for example removing an item from a collection. `$unset` only works for objects, not arrays.
 
 * **`$unshift` doesn't reverse**
 
@@ -40,7 +40,7 @@ The following new features/bugfixes have been implemented:
 
 ## Incompatibilities
 
-This module is mostly compatible with the react version except for the following notes:
+This module is mostly compatible with the react version except for the following:
 
 * **Doesn't implement `$apply`**
 
@@ -53,7 +53,7 @@ This module is mostly compatible with the react version except for the following
 
 ## Server-side
 
-There is a companion perl module [Update::Immutable](https://metacpan.org/pod/Update::Immutable) that implements functionality identical to this module. This lets you process updates both server-side and on the client (provided your server is implemented in perl that is).
+There is a companion perl module [Update::Immutable](https://metacpan.org/pod/Update::Immutable) that implements functionality identical to this module. This lets you process updates in the same way on both the server and the client (provided your server is implemented in perl that is).
 
 
 ## Copyright
