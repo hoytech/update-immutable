@@ -16,6 +16,16 @@ This is a mostly-compatible re-implementation of [react's update function](https
     ## next: { a: 1, b: 2 }
     ## orig: { a: 1 }
 
+## Usage (ES5)
+
+    var update = require("update-immutable").default;
+
+    var orig = { a: 1 };
+    var next = update(orig, { b: { $set: 2 } });
+
+    ## next: { a: 1, b: 2 }
+    ## orig: { a: 1 }
+
 
 ## Features
 
