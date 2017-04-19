@@ -41,6 +41,27 @@ apply_update(test,
   { a: { b: 5 }, c: 2 }
 );
 
+apply_update(test,
+  "set array",
+  { a: [ 0, ], },
+  { a: { 0: { '$set': 9 } } },
+  { a: [ 9 ] }
+);
+
+apply_update(test,
+  "set array",
+  { a: [ 0, ], },
+  { a: { 1: { '$set': 9 } } },
+  { a: [ 0, 9 ] }
+);
+
+apply_update(test,
+  "set array",
+  { a: [ 0, ], },
+  { a: { 4: { '$set': 9 } } },
+  { a: [ 0,,,,9 ] }
+);
+
 // unset
 
 apply_update(test,
