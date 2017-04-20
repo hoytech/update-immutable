@@ -49,14 +49,14 @@ apply_update(test,
 );
 
 apply_update(test,
-  "set array",
+  "set array, new index",
   { a: [ 0, ], },
   { a: { 1: { '$set': 9 } } },
   { a: [ 0, 9 ] }
 );
 
 apply_update(test,
-  "set array",
+  "set array, new index leaving gap",
   { a: [ 0, ], },
   { a: { 4: { '$set': 9 } } },
   { a: [ 0,,,,9 ] }
