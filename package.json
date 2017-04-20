@@ -4,7 +4,7 @@
   "description": "React-compatible data-structure update utility",
   "main": "dist/update",
   "scripts": {
-    "build": "node node_modules/babel-cli/bin/babel.js src/update.js --out-dir dist",
+    "build": "node node_modules/babel-cli/bin/babel.js update.js --out-dir dist",
     "test": "npm run build && node_modules/nodeunit/bin/nodeunit t/basic.js",
     "prepublish": "npm run build"
   },
