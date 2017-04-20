@@ -1,6 +1,6 @@
 {
   "name": "update-immutable",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "React-compatible data-structure update utility",
   "main": "dist/update",
   "scripts": {
