@@ -66,12 +66,12 @@ However, in this module it will autovivify the nested structures into existence 
     > update({}, {a: {b: {c: {$set: true}}}})
     { a: { b: { c: true } } }
 
-Nested autovivification will only create objects however, because the update language unfortunately doesn't distinguish between object access and array access. So if creating a nested array with autovivification is not supported:
+Nested autovivification will only create objects however, because the update language unfortunately doesn't distinguish between object access and array access. Creating a nested array with autovivification is not supported and will create an object instead:
 
     > update({}, {a: {0: {c: {$set: true}}}})
     { a: { '0': { c: true } } }
 
-So don't do that. But note that autovivifying an array into existence with a push (for example) works fine since it's obvious you mean for that key to contain an array:
+Note however that autovivifying an array into existence with a push (for example) works fine since it's obvious you meant for that key to contain an array:
 
     > update({}, {a: {b: {c: {$push: [1,2,3]}}}})
     { a: { b: { c: [1, 2, 3] } } }
