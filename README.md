@@ -9,7 +9,7 @@ This is a mostly-compatible re-implementation of [react's update function](https
 
 In react this is useful for implementing an efficient [shouldComponentUpdate()](https://facebook.github.io/react/docs/react-component.html#shouldcomponentupdate), for example by sub-classing [React.PureComponent](https://facebook.github.io/react/docs/react-api.html#react.purecomponent). For more details, see this page on [optimizing react performance](https://facebook.github.io/react/docs/optimizing-performance.html#shouldcomponentupdate-in-action).
 
-However, this module is independent of react, and is also suitable for passing updates between clients and servers so that a consistent data-structure can be maintained on both ends of a connection without transferring the entire structure on every modification. When used for both react purposes and server-client communication, systems can be designed where server-side events directly cause modification of react component states.
+However, this module is independent of react, and is also suitable for passing updates between clients and servers so that a consistent data-structure can be maintained on both ends of a connection without transferring the entire structure on every modification. When used for both react component state updates and server-client communication, systems can be designed where server-side events directly cause modification of react components.
 
 
 ## Usage (ES6)
@@ -43,7 +43,7 @@ The following new features/bugfixes have been implemented:
 
 * **Implements `$unset`**
 
-  The react team [refuses to merge](https://github.com/facebook/react/pull/2362/) this functionality. `$unset` is important for several use-cases, for example removing an item from a collection so that it will no longer be present when you iterate over that collection. `$unset` only works for objects, not arrays.
+  The react team [refuses to merge](https://github.com/facebook/react/pull/2362/) this functionality. `$unset` is important for several use-cases, for example removing an item from a collection so that it will no longer be present when you iterate over that collection. `$unset` only works for objects, not arrays. Array elements can be deleted with `$splice`.
 
 * **`$unshift` doesn't reverse**
 
@@ -71,7 +71,7 @@ Nested autovivification will only create objects however, because the update lan
     > update({}, {a: {0: {c: {$set: true}}}})
     { a: { '0': { c: true } } }
 
-So don't do that. But note that autovivifying an array into existence with a push (for example) works fine since it's obvious you mean that key to be an array:
+So don't do that. But note that autovivifying an array into existence with a push (for example) works fine since it's obvious you mean for that key to contain an array:
 
     > update({}, {a: {b: {c: {$push: [1,2,3]}}}})
     { a: { b: { c: [1, 2, 3] } } }
@@ -84,7 +84,7 @@ This module is mostly compatible with the react version except for the following
 
 * **Doesn't implement `$apply`**
 
-  This module is primarily intended for transferring incremental updates between browsers and server-side web apps. For this use case, `$apply` is not possible since functions cannot be serialised. If there is interest we may eventually implement `$apply` (pull requests welcome).
+  This module is primarily intended for transferring incremental updates between browsers and server-side web apps. For this use case, `$apply` does not work since functions cannot be serialised. If there is interest we may eventually implement `$apply` (pull requests welcome).
 
 * **`$unshift` behaviour**
 
@@ -100,7 +100,7 @@ There is a companion perl module [Update::Immutable](https://metacpan.org/pod/Up
 
 Please add any bug reports or feature requests to the [update-immutable repo on github](https://github.com/hoytech/update-immutable).
 
-As mentioned, this is a re-implementation of [react's update function](https://facebook.github.io/react/docs/update.html) which is now deprecated (but currently still available).
+As mentioned, this is a re-implementation of [react's update function](https://facebook.github.io/react/docs/update.html) which is now deprecated (but currently still available [as an add-on](https://www.npmjs.com/package/react-addons-update)).
 
 There is another re-implementation called [immutability-helper](https://www.npmjs.com/package/immutability-helper). It allows you to define custom commands, although currently it doesn't provide autovivification or `$unset`.
 
