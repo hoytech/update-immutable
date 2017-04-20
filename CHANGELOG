@@ -1,0 +1,13 @@
+1.0.5  2017-04-20
+  * Bugfix in $merge auto-vivification. An array would incorrectly
+    be created instead of an object.
+  * New tests for using $set to set items in an array
+  * Add LICENSE file (2-clause BSD license)
+  * Various documentation updates
+    * Better description section
+    * Section on autovivification feature
+    * Add a see-also section to docs linking to known alternate
+      implementations
+
+1.0.4  2016-08-08
+  * First production-ready release
