@@ -66,6 +66,15 @@ This module is mostly compatible with the react version except for the following
 There is a companion perl module [Update::Immutable](https://metacpan.org/pod/Update::Immutable) that implements functionality identical to this module. This lets you process updates in the same way on both the server and the client (provided your server is implemented in perl that is).
 
 
+## See-also
+
+As mentioned, this is a re-implementation of [react's update function](https://facebook.github.io/react/docs/update.html) which is now deprecated.
+
+There is another re-implementation called [immutability-helper](https://www.npmjs.com/package/immutability-helper).
+
+For certain use-cases, [immutable.js](https://facebook.github.io/immutable-js/) may be better than using `update()`, although this does not work for transferring updates between clients and servers (without creating another update protocol on top).
+
+
 ## Copyright
 
 (C) 2016 Doug Hoyte
