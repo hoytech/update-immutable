@@ -5,6 +5,12 @@
 
 This is a mostly-compatible re-implementation of [react's update function](https://facebook.github.io/react/docs/update.html).
 
+`update()` implements a mini-language that describes modifications to a data-structure consisting of nested objects and arrays. The updates can be applied to a data-structure without modifying it. Instead, a new data-structure is returned that has had the updates applied. The two structures share as much as possible. Only the intermediate structures that needed to be modified are shallow-copied prior to modification. Everything else is preserved and is therefore shared between the two structures.
+
+In react this is useful for implementing an efficient [shouldComponentUpdate()](https://facebook.github.io/react/docs/react-component.html#shouldcomponentupdate), for example by sub-classing [React.PureComponent](https://facebook.github.io/react/docs/react-api.html#react.purecomponent). For more details, see this page on [optimizing react performance](https://facebook.github.io/react/docs/optimizing-performance.html#shouldcomponentupdate-in-action).
+
+However, this module is independent of react, and is also suitable for passing updates between clients and servers so that a consistent data-structure can be maintained on both ends of a connection without transferring the entire structure on every modification. When used for both react purposes and server-client communication, systems can be designed where server-side events directly cause modification of react component states.
+
 
 ## Usage (ES6)
 
@@ -37,20 +43,20 @@ The following new features/bugfixes have been implemented:
 
 * **Implements `$unset`**
 
-  The react team [refuses to merge](https://github.com/facebook/react/pull/2362/) this functionality. `$unset` is important for several use-cases, for example removing an item from a collection. `$unset` only works for objects, not arrays.
+  The react team [refuses to merge](https://github.com/facebook/react/pull/2362/) this functionality. `$unset` is important for several use-cases, for example removing an item from a collection so that it will no longer be present when you iterate over that collection. `$unset` only works for objects, not arrays.
 
 * **`$unshift` doesn't reverse**
 
-  The react version of `$unshift` unshifts each element in a loop, thereby reversing the provided list. This version fixes that bug and makes it work like [perl's unshift](http://perldoc.perl.org/functions/unshift.html).
+  The react version of `$unshift` unshifts each element in a loop, thereby reversing the portion of the list provided in the update. This version fixes that bug and makes it work like [perl's unshift](http://perldoc.perl.org/functions/unshift.html).
 
 * **Supports autovivification**
 
-  [Autovivification](https://en.wikipedia.org/wiki/Autovivification) allows you to modify a nested data structure even if the nesting data-structures don't yet exist. They will be created so as to satisfy the update. This simplifies many use-cases, for example you don't need to maintain an initial-state skeleton.
+  [Autovivification](https://en.wikipedia.org/wiki/Autovivification) allows you to modify a nested data structure even if the nesting data-structures don't yet exist. They will be created so as to satisfy the update. This simplifies many use-cases, for example you don't need to maintain an initial-state skeleton. See below for more details.
 
 
 ## Autovivification
 
-In the original `update` implementation, if you try to set a value in a nested structure where one of the the intermediate keys doesn't exist, an error will be thrown:
+In the original `update` implementation, if you try to set a value in a nested structure where one of the intermediate keys doesn't exist, an error will be thrown:
 
     > update({}, {a: {b: {c: {$set: true}}}})
     TypeError: Cannot read property 'b' of undefined
@@ -92,11 +98,15 @@ There is a companion perl module [Update::Immutable](https://metacpan.org/pod/Up
 
 ## See-also
 
-As mentioned, this is a re-implementation of [react's update function](https://facebook.github.io/react/docs/update.html) which is now deprecated.
+Please add any bug reports or feature requests to the [update-immutable repo on github](https://github.com/hoytech/update-immutable).
 
-There is another re-implementation called [immutability-helper](https://www.npmjs.com/package/immutability-helper).
+As mentioned, this is a re-implementation of [react's update function](https://facebook.github.io/react/docs/update.html) which is now deprecated (but currently still available).
+
+There is another re-implementation called [immutability-helper](https://www.npmjs.com/package/immutability-helper). It allows you to define custom commands, although currently it doesn't provide autovivification or `$unset`.
 
 For certain use-cases, [immutable.js](https://facebook.github.io/immutable-js/) may be better than using `update()`, although this does not work for transferring updates between clients and servers (without creating another update protocol on top).
+
+Perl companion module: [Update::Immutable](https://metacpan.org/pod/Update::Immutable)
 
 
 ## Copyright
