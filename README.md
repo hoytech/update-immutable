@@ -43,9 +43,33 @@ The following new features/bugfixes have been implemented:
 
   The react version of `$unshift` unshifts each element in a loop, thereby reversing the provided list. This version fixes that bug and makes it work like [perl's unshift](http://perldoc.perl.org/functions/unshift.html).
 
-* **Supports auto-vivification**
+* **Supports autovivification**
 
-  [Auto-vivification](https://en.wikipedia.org/wiki/Autovivification) allows you to modify a nested data structure even if the nesting data-structures don't yet exist. They will be created so as to satisfy the update. This simplifies many use-cases, for example you don't need to maintain an initial-state skeleton.
+  [Autovivification](https://en.wikipedia.org/wiki/Autovivification) allows you to modify a nested data structure even if the nesting data-structures don't yet exist. They will be created so as to satisfy the update. This simplifies many use-cases, for example you don't need to maintain an initial-state skeleton.
+
+
+## Autovivification
+
+In the original `update` implementation, if you try to set a value in a nested structure where one of the the intermediate keys doesn't exist, an error will be thrown:
+
+    > update({}, {a: {b: {c: {$set: true}}}})
+    TypeError: Cannot read property 'b' of undefined
+
+However, in this module it will autovivify the nested structures into existence so as to satisfy the update:
+
+    > update({}, {a: {b: {c: {$set: true}}}})
+    { a: { b: { c: true } } }
+
+Nested autovivification will only create objects however, because the update language unfortunately doesn't distinguish between object access and array access. So if creating a nested array with autovivification is not supported:
+
+    > update({}, {a: {0: {c: {$set: true}}}})
+    { a: { '0': { c: true } } }
+
+So don't do that. But note that autovivifying an array into existence with a push (for example) works fine since it's obvious you mean that key to be an array:
+
+    > update({}, {a: {b: {c: {$push: [1,2,3]}}}})
+    { a: { b: { c: [1, 2, 3] } } }
+
 
 
 ## Incompatibilities
@@ -77,6 +101,6 @@ For certain use-cases, [immutable.js](https://facebook.github.io/immutable-js/) 
 
 ## Copyright
 
-(C) 2016 Doug Hoyte
+(C) 2016-2017 Doug Hoyte
 
 2-clause BSD license

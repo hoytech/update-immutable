@@ -1,7 +1,7 @@
 /*
 React-compatible data-structure update utility
 
-(C) 2016 Doug Hoyte
+(C) 2016-2017 Doug Hoyte
 2-clause BSD license
 */
 
