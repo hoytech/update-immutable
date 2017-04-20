@@ -36,7 +36,7 @@ export default function update(view, upd) {
   }
 
   if (upd.hasOwnProperty('$merge')) {
-    if (view === undefined) view = [];
+    if (view === undefined) view = {};
 
     if (typeof(view) !== 'object') throw(new Error("view is not an object in merge"));
     if (typeof(upd) !== 'object') throw(new Error("update is not an object in merge"));

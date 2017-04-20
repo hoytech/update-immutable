@@ -96,9 +96,9 @@ apply_update(test,
 
 apply_update(test,
   "merge auto-vivify",
-  {},
-  { a: { b: { '$merge': { c: 1 } } } },
-  { a: { b: { c: 1 } } }
+  { a: 1, b: 2 },
+  { q: { $merge: { b: 3, c: 4 } } },
+  { a: 1, b: 2, q: { b: 3, c: 4 } }
 );
 
 // push
