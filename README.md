@@ -82,10 +82,6 @@ Note however that autovivifying an array into existence with a push (for example
 
 This module is mostly compatible with the react version except for the following:
 
-* **Doesn't implement `$apply`**
-
-  This module is primarily intended for transferring incremental updates between browsers and server-side web apps. For this use case, `$apply` does not work since functions cannot be serialised. If there is interest we may eventually implement `$apply` (pull requests welcome).
-
 * **`$unshift` behaviour**
 
   As described above, when passing multiple items in a single `$unshift` update, the order of the items is preserved, unlike react which reverses the list.
@@ -94,6 +90,8 @@ This module is mostly compatible with the react version except for the following
 ## Server-side
 
 There is a companion perl module [Update::Immutable](https://metacpan.org/pod/Update::Immutable) that implements functionality identical to this module. This lets you process updates in the same way on both the server and the client (provided your server is implemented in perl that is).
+
+If you do plan on performing server-client updates, you should avoid using `$apply` since functions generally cannot be serialised for transfer over the network. `$apply` is useful for react-compatibility and/or purely in-browser updates.
 
 
 ## See-also
