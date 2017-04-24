@@ -108,6 +108,11 @@ For certain use-cases, [immutable.js](https://facebook.github.io/immutable-js/) 
 Perl companion module: [Update::Immutable](https://metacpan.org/pod/Update::Immutable)
 
 
+## Todo
+
+If you make an update and change a primitive value to itself, a new container is still shallow-copied and returned. As an optimisation we could check for this and preserve the original container. For example see [this pull request](https://github.com/facebook/react/pull/6353). Deep-comparing non-primitive updates is probably not worth it though.
+
+
 ## Copyright
 
 (C) 2016-2017 Doug Hoyte
