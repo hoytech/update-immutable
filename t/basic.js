@@ -117,6 +117,13 @@ apply_update(test,
   { a: [ 1, 2 ] }
 );
 
+apply_update(test,
+  "push auto-vivify null",
+  { a: { b: null } },
+  { a: { b: { '$push': [ 1, 2 ] } } },
+  { a: { b: [ 1, 2 ] } }
+);
+
 // unshift
 
 apply_update(test,
