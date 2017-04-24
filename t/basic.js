@@ -180,6 +180,13 @@ apply_update(test,
 );
 
 apply_update(test,
+  "apply, auto-vivify null",
+  { a: { b: null }, c: 2 },
+  { a: { b: { '$apply': (val) => 5 } } },
+  { a: { b: 5 }, c: 2 }
+);
+
+apply_update(test,
   "apply array",
   { a: [ 2, ], },
   { a: { 0: { '$apply': (val) => val * 2 } } },
