@@ -201,5 +201,35 @@ apply_update(test,
 );
 
 
+
+// misc
+
+// https://github.com/kolodny/immutability-helper/issues/21
+
+apply_update(test,
+  "merge auto-vivfy 2.1",
+  { items: {} },
+  { items: { 15: { '$merge': { 1: { id: 1, name: 'One' }, 2: { id: 2, name: 'Two'} } } } },
+  { items: { 15: { 1: { id: 1, name: 'One' }, 2: { id: 2, name: 'Two'} } } }
+);
+
+apply_update(test,
+  "merge auto-vivfy 2.2",
+  { items: { 15: { 1: { id: 1, name: 'One' }, 2: { id: 2, name: 'Two'} } } },
+  { items: { 15: { '$merge': { 3: { id: 3, name: 'Three' } } } } },
+  { items: { 15: { 1: { id: 1, name: 'One' }, 2: { id: 2, name: 'Two'}, 3: { id: 3, name: 'Three' } } } }
+);
+
+
+// multi-set
+
+apply_update(test,
+  "multiple modifications in a single update",
+  { a: { b: 1 } },
+  { c: { '$set': 2 }, a: { '$merge': { e: 3 } } },
+  { a: { b: 1, e: 3 }, c: 2 }
+);
+
+
     test.done();
 };
