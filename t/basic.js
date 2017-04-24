@@ -163,6 +163,36 @@ apply_update(test,
   { a: [ 8, 9 ] }
 );
 
+// apply
+
+apply_update(test,
+  "apply",
+  { a: { b: 3, z: 2 }, c: 2 },
+  { a: { b: { '$apply': (val) => val * 2} } },
+  { a: { b: 6, z: 2 }, c: 2 }
+);
+
+apply_update(test,
+  "apply, auto-vivify",
+  { c: 2 },
+  { a: { b: { '$apply': (val) => 5 } } },
+  { a: { b: 5 }, c: 2 }
+);
+
+apply_update(test,
+  "apply, auto-vivify null",
+  { a: { b: null }, c: 2 },
+  { a: { b: { '$apply': (val) => 5 } } },
+  { a: { b: 5 }, c: 2 }
+);
+
+apply_update(test,
+  "apply array",
+  { a: [ 2, ], },
+  { a: { 0: { '$apply': (val) => val * 2 } } },
+  { a: [ 4 ] }
+);
+
 
     test.done();
 };

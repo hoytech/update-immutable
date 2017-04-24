@@ -25,7 +25,7 @@ export default function update(view, upd) {
   }
 
   if (upd.hasOwnProperty('$unset')) {
-    if (view === undefined) view = {};
+    if (view === undefined || view === null) view = {};
 
     if (typeof(view) !== 'object') throw(new Error("view is not an object in unset"));
 
@@ -36,7 +36,7 @@ export default function update(view, upd) {
   }
 
   if (upd.hasOwnProperty('$merge')) {
-    if (view === undefined) view = {};
+    if (view === undefined || view === null) view = {};
 
     if (typeof(view) !== 'object') throw(new Error("view is not an object in merge"));
     if (typeof(upd) !== 'object') throw(new Error("update is not an object in merge"));
@@ -49,7 +49,7 @@ export default function update(view, upd) {
   }
 
   if (upd.hasOwnProperty('$push')) {
-    if (view === undefined) view = [];
+    if (view === undefined || view === null) view = [];
 
     if (!Array.isArray(view)) throw(new Error("view is not an array in push"));
     if (!Array.isArray(upd['$push'])) throw(new Error("update is not an array in push"));
@@ -64,7 +64,7 @@ export default function update(view, upd) {
   }
 
   if (upd.hasOwnProperty('$unshift')) {
-    if (view === undefined) view = [];
+    if (view === undefined || view === null) view = [];
 
     if (!Array.isArray(view)) throw(new Error("view is not an array in unshift"));
     if (!Array.isArray(upd['$unshift'])) throw(new Error("update is not an array in unshift"));
@@ -79,7 +79,7 @@ export default function update(view, upd) {
   }
 
   if (upd.hasOwnProperty('$splice')) {
-    if (view === undefined) view = [];
+    if (view === undefined || view === null) view = [];
 
     if (!Array.isArray(view)) throw(new Error("view is not an array in splice"));
     if (!Array.isArray(upd['$splice'])) throw(new Error("update is not an array in splice"));
@@ -94,10 +94,28 @@ export default function update(view, upd) {
     return new_view;
   }
 
+  if (upd.hasOwnProperty('$apply')) {
+    if (view === undefined || view === null) view = {};
+    if (typeof(upd['$apply']) !== 'function') throw(new Error("update is not a function in apply"));
+
+    let new_view;
+
+    if (Array.isArray(view)) {
+      new_view = shallowCopyArray(view);
+    } else if (typeof(view) === 'object') {
+      new_view = shallowCopyObject(view);
+    } else if (view !== Object(view)) {
+      new_view = view;
+    }
+
+    if (new_view === undefined) throw(new Error("view is not an object, array or primitive"));
+    return upd['$apply'](new_view);
+  }
+
 
   // Recurse to handle nested commands in upd:
 
-  if (view === undefined) view = {};
+  if (view === undefined || view === null) view = {};
 
   if (Array.isArray(view)) {
     let output = shallowCopyArray(view);
