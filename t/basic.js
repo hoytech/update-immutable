@@ -195,7 +195,7 @@ apply_update(test,
 
 apply_update(test,
   "apply array",
-  { a: [ 2, ], },
+  { a: [ 2 ] },
   { a: { 0: { '$apply': (val) => val * 2 } } },
   { a: [ 4 ] }
 );
