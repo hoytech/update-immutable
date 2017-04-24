@@ -107,6 +107,8 @@ For certain use-cases, [immutable.js](https://facebook.github.io/immutable-js/) 
 
 Perl companion module: [Update::Immutable](https://metacpan.org/pod/Update::Immutable)
 
+I did a short talk on this module which you can [watch on YouTube](https://www.youtube.com/watch?v=pWuxwurtALc&t=1293).
+
 
 ## Todo
 
