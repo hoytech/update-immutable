@@ -94,6 +94,24 @@ export default function update(view, upd) {
     return new_view;
   }
 
+  if (upd.hasOwnProperty('$apply')) {
+    if (view === undefined) view = {};
+    if (typeof(upd['$apply']) !== 'function') throw(new Error("update is not a function in apply"));
+
+    let new_view;
+
+    if (Array.isArray(view)) {
+      new_view = shallowCopyArray(view);
+    } else if (typeof(view) === 'object') {
+      new_view = shallowCopyObject(view);
+    } else if (view !== Object(view)) {
+      new_view = view;
+    }
+
+    if (new_view === undefined) throw(new Error("view is not an object, array or primitive"));
+    return upd['$apply'](new_view);
+  }
+
 
   // Recurse to handle nested commands in upd:
 
