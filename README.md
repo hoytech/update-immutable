@@ -76,6 +76,7 @@ Note however that autovivifying an array into existence with a push (for example
     > update({}, {a: {b: {c: {$push: [1,2,3]}}}})
     { a: { b: { c: [1, 2, 3] } } }
 
+As of version 1.0.6, this module also autovivifies `null` into existence just as it does `undefined`. This can be useful since setting to `null` is often used instead of deleting an element from a collection.
 
 
 ## Incompatibilities
