@@ -1,3 +1,7 @@
+1.1.1  2015-05-01
+  * Properly include the compiled .js file in the npm distribution.
+    (thanks Bernhard Gschwantner)
+
 1.1.0  2017-04-24
   * Implement $apply (thanks George Kormaris)
   * Auto-vivify null as well as undefined (thanks George Kormaris)
