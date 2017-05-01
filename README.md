@@ -42,47 +42,47 @@ However, this module is independent of react, and is also suitable for passing u
 
 * `$unset`: Unsets the provided key or keys. Example:
 
-    update({ a: 1, b: 2 }, { $unset: 'a' })
-    => { b: 2 }
+        update({ a: 1, b: 2 }, { $unset: 'a' })
+        => { b: 2 }
 
-    update({ a: 1, b: 2 }, { $unset: ['a', 'b'] })
-    => {}
+        update({ a: 1, b: 2 }, { $unset: ['a', 'b'] })
+        => {}
 
 * `$merge`: Does a shallow merge, replacing the previous values (if any). Example:
 
-    update({ a: 1, b: 2 }, { $merge: { a: 3, c: 4 } })
-    => { a: 3, b: 2, c: 4 }
+        update({ a: 1, b: 2 }, { $merge: { a: 3, c: 4 } })
+        => { a: 3, b: 2, c: 4 }
 
     Note: This is a shallow merge only and will fully replace the values with the new values. For example, you may expect that both `b` and `c` keys will exist in the following output:
 
-    update({ a: { b: 1 } }, { $merge: { a: { c: 1 } } })
-    => { a: { c: 1 } }
+        update({ a: { b: 1 } }, { $merge: { a: { c: 1 } } })
+        => { a: { c: 1 } }
 
     But in this case, the object containing `b` is fully replaced. There are various ways to solve this, for example using one of the many deep merging modules on npm, for example [deepmerge](https://www.npmjs.com/package/deepmerge):
 
-    var orig = { a: { b: 1 } };
-    update(orig, { a: { $set: deepmerge(orig.a, { c: 2 }) } })
-    => { a: { b: 1, c: 2 } }
+        var orig = { a: { b: 1 } };
+        update(orig, { a: { $set: deepmerge(orig.a, { c: 2 }) } })
+        => { a: { b: 1, c: 2 } }
 
 * `$push`: Appends new values to the end of an array. Example:
 
-    update({ a: [1, 2] }, { a: { $push: [3, 4] } })
-    => { a: [ 1, 2, 3, 4 ] }
+        update({ a: [1, 2] }, { a: { $push: [3, 4] } })
+        => { a: [ 1, 2, 3, 4 ] }
 
 * `$unshift`: Prepends new values to the beginning of an array. Example:
 
-    update({ a: [1, 2] }, { a: { $unshift: [3, 4] } })
-    => { a: [ 3, 4, 1, 2 ] }
+        update({ a: [1, 2] }, { a: { $unshift: [3, 4] } })
+        => { a: [ 3, 4, 1, 2 ] }
 
 * `$splice`: Calls javascript's [splice](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) method on the target array. Accepts an array of arrays, each of which are the arguments to a splice call. Example:
 
-    update({ a: [0, 1, 2] }, { a: { $splice: [ [1, 0, 3] ] } })
-    => { a: [ 0, 3, 1, 2 ] }
+        update({ a: [0, 1, 2] }, { a: { $splice: [ [1, 0, 3] ] } })
+        => { a: [ 0, 3, 1, 2 ] }
 
 As well as adding elements, `$splice` is also useful for removing elements:
 
-    update({ a: [0, 1, 2, 3, 4, 5] }, { a: { $splice: [ [2, 2] ] } })
-    => { a: [ 0, 1, 4, 5 ] }
+        update({ a: [0, 1, 2, 3, 4, 5] }, { a: { $splice: [ [2, 2] ] } })
+        => { a: [ 0, 1, 4, 5 ] }
 
 
 
