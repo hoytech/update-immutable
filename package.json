@@ -2,7 +2,7 @@
   "name": "update-immutable",
   "version": "1.1.0",
   "description": "React-compatible data-structure update utility",
-  "main": "dist/update",
+  "main": "dist/update.js",
   "scripts": {
     "build": "node node_modules/babel-cli/bin/babel.js update.js --out-dir dist",
     "test": "npm run build && node_modules/nodeunit/bin/nodeunit t/basic.js",
