@@ -1,3 +1,7 @@
+1.1.2  2015-05-01
+  * $unset now accepts either a single key or an array of keys
+  * Document all the commands
+
 1.1.1  2015-05-01
   * Properly include the compiled .js file in the npm distribution.
     (thanks Bernhard Gschwantner)
