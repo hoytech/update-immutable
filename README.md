@@ -37,8 +37,8 @@ However, this module is independent of react, and is also suitable for passing u
 
 * `$set`: Sets a value in an object, replacing the previous value (if any). Example:
 
-    update({}, { a: { $set: 1 } })
-    => { a: 1 }
+        update({}, { a: { $set: 1 } })
+        => { a: 1 }
 
 * `$unset`: Unsets the provided key or keys. Example:
 
@@ -58,7 +58,7 @@ However, this module is independent of react, and is also suitable for passing u
     update({ a: { b: 1 } }, { $merge: { a: { c: 1 } } })
     => { a: { c: 1 } }
 
-But in this case, the object containing `b` is fully replaced. There are various ways to solve this, for example using one of the many deep merging modules on npm, for example [deepmerge](https://www.npmjs.com/package/deepmerge):
+    But in this case, the object containing `b` is fully replaced. There are various ways to solve this, for example using one of the many deep merging modules on npm, for example [deepmerge](https://www.npmjs.com/package/deepmerge):
 
     var orig = { a: { b: 1 } };
     update(orig, { a: { $set: deepmerge(orig.a, { c: 2 }) } })
