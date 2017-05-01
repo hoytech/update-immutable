@@ -37,7 +37,35 @@ function update(view, upd) {
     if ((typeof view === 'undefined' ? 'undefined' : _typeof(view)) !== 'object') throw new Error("view is not an object in unset");
 
     var new_view = shallowCopyObject(view);
-    delete new_view[upd['$unset']];
+
+    if (_typeof(upd['$unset']) === 'object') {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = upd['$unset'][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var k = _step.value;
+
+          delete new_view[k];
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    } else {
+      delete new_view[upd['$unset']];
+    }
 
     return new_view;
   }
@@ -63,51 +91,15 @@ function update(view, upd) {
 
     var _new_view2 = shallowCopyArray(view);
 
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-      for (var _iterator = upd['$push'][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var e = _step.value;
-
-        _new_view2.push(e);
-      }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
-
-    return _new_view2;
-  }
-
-  if (upd.hasOwnProperty('$unshift')) {
-    if (view === undefined || view === null) view = [];
-
-    if (!Array.isArray(view)) throw new Error("view is not an array in unshift");
-    if (!Array.isArray(upd['$unshift'])) throw new Error("update is not an array in unshift");
-
-    var _new_view3 = shallowCopyArray(view);
-
     var _iteratorNormalCompletion2 = true;
     var _didIteratorError2 = false;
     var _iteratorError2 = undefined;
 
     try {
-      for (var _iterator2 = upd['$unshift'].reverse()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-        var _e = _step2.value;
+      for (var _iterator2 = upd['$push'][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var e = _step2.value;
 
-        _new_view3.unshift(_e);
+        _new_view2.push(e);
       }
     } catch (err) {
       _didIteratorError2 = true;
@@ -124,27 +116,26 @@ function update(view, upd) {
       }
     }
 
-    return _new_view3;
+    return _new_view2;
   }
 
-  if (upd.hasOwnProperty('$splice')) {
+  if (upd.hasOwnProperty('$unshift')) {
     if (view === undefined || view === null) view = [];
 
-    if (!Array.isArray(view)) throw new Error("view is not an array in splice");
-    if (!Array.isArray(upd['$splice'])) throw new Error("update is not an array in splice");
+    if (!Array.isArray(view)) throw new Error("view is not an array in unshift");
+    if (!Array.isArray(upd['$unshift'])) throw new Error("update is not an array in unshift");
 
-    var _new_view4 = shallowCopyArray(view);
+    var _new_view3 = shallowCopyArray(view);
 
     var _iteratorNormalCompletion3 = true;
     var _didIteratorError3 = false;
     var _iteratorError3 = undefined;
 
     try {
-      for (var _iterator3 = upd['$splice'][Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-        var s = _step3.value;
+      for (var _iterator3 = upd['$unshift'].reverse()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+        var _e = _step3.value;
 
-        if (!Array.isArray(s)) throw new Error("update element is not an array");
-        _new_view4.splice.apply(_new_view4, s);
+        _new_view3.unshift(_e);
       }
     } catch (err) {
       _didIteratorError3 = true;
@@ -157,6 +148,43 @@ function update(view, upd) {
       } finally {
         if (_didIteratorError3) {
           throw _iteratorError3;
+        }
+      }
+    }
+
+    return _new_view3;
+  }
+
+  if (upd.hasOwnProperty('$splice')) {
+    if (view === undefined || view === null) view = [];
+
+    if (!Array.isArray(view)) throw new Error("view is not an array in splice");
+    if (!Array.isArray(upd['$splice'])) throw new Error("update is not an array in splice");
+
+    var _new_view4 = shallowCopyArray(view);
+
+    var _iteratorNormalCompletion4 = true;
+    var _didIteratorError4 = false;
+    var _iteratorError4 = undefined;
+
+    try {
+      for (var _iterator4 = upd['$splice'][Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+        var s = _step4.value;
+
+        if (!Array.isArray(s)) throw new Error("update element is not an array");
+        _new_view4.splice.apply(_new_view4, s);
+      }
+    } catch (err) {
+      _didIteratorError4 = true;
+      _iteratorError4 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion4 && _iterator4.return) {
+          _iterator4.return();
+        }
+      } finally {
+        if (_didIteratorError4) {
+          throw _iteratorError4;
         }
       }
     }

@@ -72,6 +72,13 @@ apply_update(test,
 );
 
 apply_update(test,
+  "unset multiple keys",
+  { a: { b: 1, z: 2, x: 3, y: 4 }, c: 2 },
+  { a: { '$unset': ['b', 'z', 'y'] } },
+  { a: { x: 3 }, c: 2 }
+);
+
+apply_update(test,
   "unset auto-vivify",
   {},
   { a: { '$unset': 'b' } },

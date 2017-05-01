@@ -30,7 +30,14 @@ export default function update(view, upd) {
     if (typeof(view) !== 'object') throw(new Error("view is not an object in unset"));
 
     let new_view = shallowCopyObject(view);
-    delete new_view[upd['$unset']];
+
+    if (typeof(upd['$unset']) === 'object') {
+      for (let k of upd['$unset']) {
+        delete new_view[k];
+      }
+    } else {
+      delete new_view[upd['$unset']];
+    }
 
     return new_view;
   }
