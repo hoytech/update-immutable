@@ -79,7 +79,7 @@ However, this module is independent of react, and is also suitable for passing u
         update({ a: [0, 1, 2] }, { a: { $splice: [ [1, 0, 3] ] } })
         => { a: [ 0, 3, 1, 2 ] }
 
-As well as adding elements, `$splice` is also useful for removing elements:
+    As well as adding elements, `$splice` is also useful for removing elements:
 
         update({ a: [0, 1, 2, 3, 4, 5] }, { a: { $splice: [ [2, 2] ] } })
         => { a: [ 0, 1, 4, 5 ] }
