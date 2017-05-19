@@ -263,6 +263,12 @@ apply_update_unchanged(test,
 );
 
 apply_update_unchanged(test,
+  "unset none",
+  { a: { b: 1 } },
+  { a: { '$unset': [] } }
+);
+
+apply_update_unchanged(test,
   "push empty array",
   { a: { b: [1, 2, 3] } },
   { a: { b: { '$push': [] } } }
