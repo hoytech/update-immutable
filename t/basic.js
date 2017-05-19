@@ -15,6 +15,16 @@ function apply_update(test, desc, input, update_v, expected) {
     test.deepEqual(input, orig, "original not modified: " + desc);
 }
 
+function apply_primitive_update(test, desc, input, update_v, expected) {
+  var orig = clone(input);
+
+  var output = update(input, update_v);
+
+  test.deepEqual(output, expected, "update applied correctly: " + desc);
+  test.ok(input === output, "shallow equality retained: " + desc);
+  test.deepEqual(input, orig, "original not modified: " + desc);
+}
+
 
 exports.testUpdate = function(test){
 
@@ -207,6 +217,28 @@ apply_update(test,
   { a: [ 4 ] }
 );
 
+// Retain shallow equality
+
+apply_primitive_update(test,
+  "simple set, no update",
+  { a: 1 },
+  { a: { $set: 1} },
+  { a: 1 }
+);
+
+apply_primitive_update(test,
+  "nested set, no update",
+  { a: { b: 1 }, c: 2 },
+  { a: { b: { '$set': 1 } } },
+  { a: { b: 1 }, c: 2 }
+);
+
+apply_primitive_update(test,
+  "set array, no update",
+  { a: [ 9, ], },
+  { a: { 0: { '$set': 9 } } },
+  { a: [ 9 ] }
+);
 
 
 // misc

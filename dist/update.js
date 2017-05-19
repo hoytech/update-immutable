@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.default = update;
 /*
@@ -216,22 +216,30 @@ function update(view, upd) {
 
   if (Array.isArray(view)) {
     var output = shallowCopyArray(view);
+    var changed = false;
 
     for (var key in upd) {
       var int = parseInt(key);
-      if (key != int) throw new Error("non-numeric key in array update"); // deliberate != instead of !==
+      if (key != int) throw new Error('non-numeric key in array update'); // deliberate != instead of !==
       output[int] = update(output[int], upd[key]);
+      if (output[int] !== view[int]) {
+        changed = true;
+      }
     }
 
-    return output;
+    return changed ? output : view;
   } else if ((typeof view === 'undefined' ? 'undefined' : _typeof(view)) === 'object') {
     var _output = shallowCopyObject(view);
+    var _changed = false;
 
     for (var _key in upd) {
       _output[_key] = update(_output[_key], upd[_key]);
+      if (_output[_key] !== view[_key]) {
+        _changed = true;
+      }
     }
 
-    return _output;
+    return _changed ? _output : view;
   }
 
   throw new Error("view not an array or hash");
