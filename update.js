@@ -31,15 +31,23 @@ export default function update(view, upd) {
 
     let new_view = shallowCopyObject(view);
 
+    let changed = false;
+
     if (typeof(upd['$unset']) === 'object') {
       for (let k of upd['$unset']) {
-        delete new_view[k];
+        if (k in new_view) {
+          delete new_view[k];
+          changed = true;
+        }
       }
     } else {
-      delete new_view[upd['$unset']];
+      if (upd['$unset'] in new_view) {
+        delete new_view[upd['$unset']];
+        changed = true;
+      }
     }
 
-    return new_view;
+    return changed ? new_view : view;
   }
 
   if (upd.hasOwnProperty('$merge')) {
@@ -47,6 +55,17 @@ export default function update(view, upd) {
 
     if (typeof(view) !== 'object') throw(new Error("view is not an object in merge"));
     if (typeof(upd) !== 'object') throw(new Error("update is not an object in merge"));
+
+    let changed = false;
+
+    for (let k of Object.keys(upd['$merge'])) {
+      if (!(k in view) || upd['$merge'][k] !== view[k]) {
+        changed = true;
+        break;
+      }
+    }
+
+    if (!changed) return view;
 
     let new_view = shallowCopyObject(view);
 
@@ -60,6 +79,8 @@ export default function update(view, upd) {
 
     if (!Array.isArray(view)) throw(new Error("view is not an array in push"));
     if (!Array.isArray(upd['$push'])) throw(new Error("update is not an array in push"));
+
+    if (upd['$push'].length === 0) return view;
 
     let new_view = shallowCopyArray(view);
 
@@ -75,6 +96,8 @@ export default function update(view, upd) {
 
     if (!Array.isArray(view)) throw(new Error("view is not an array in unshift"));
     if (!Array.isArray(upd['$unshift'])) throw(new Error("update is not an array in unshift"));
+
+    if (upd['$unshift'].length === 0) return view;
 
     let new_view = shallowCopyArray(view);
 

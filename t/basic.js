@@ -15,14 +15,13 @@ function apply_update(test, desc, input, update_v, expected) {
     test.deepEqual(input, orig, "original not modified: " + desc);
 }
 
-function apply_primitive_update(test, desc, input, update_v, expected) {
+function apply_update_unchanged(test, desc, input, update_v) {
   var orig = clone(input);
 
   var output = update(input, update_v);
 
-  test.deepEqual(output, expected, "update applied correctly: " + desc);
+  test.deepEqual(output, orig, "update applied correctly (no change): " + desc);
   test.ok(input === output, "shallow equality retained: " + desc);
-  test.deepEqual(input, orig, "original not modified: " + desc);
 }
 
 
@@ -116,6 +115,13 @@ apply_update(test,
   { a: 1, b: 2 },
   { q: { $merge: { b: 3, c: 4 } } },
   { a: 1, b: 2, q: { b: 3, c: 4 } }
+);
+
+apply_update(test,
+  "merge undefined",
+  { a: 1, b: 2 },
+  { '$merge': { c: undefined } },
+  { a: 1, b: 2, c: undefined }
 );
 
 // push
@@ -219,25 +225,52 @@ apply_update(test,
 
 // Retain shallow equality
 
-apply_primitive_update(test,
+apply_update_unchanged(test,
   "simple set, no update",
   { a: 1 },
-  { a: { $set: 1} },
-  { a: 1 }
+  { a: { $set: 1} }
 );
 
-apply_primitive_update(test,
+apply_update_unchanged(test,
   "nested set, no update",
   { a: { b: 1 }, c: 2 },
-  { a: { b: { '$set': 1 } } },
-  { a: { b: 1 }, c: 2 }
+  { a: { b: { '$set': 1 } } }
 );
 
-apply_primitive_update(test,
+apply_update_unchanged(test,
   "set array, no update",
   { a: [ 9, ], },
-  { a: { 0: { '$set': 9 } } },
-  { a: [ 9 ] }
+  { a: { 0: { '$set': 9 } } }
+);
+
+apply_update_unchanged(test,
+  "unset object, already unset",
+  { a: { b: 1 } },
+  { a: { '$unset': 'c' } }
+);
+
+apply_update_unchanged(test,
+  "push empty array",
+  { a: { b: [1, 2, 3] } },
+  { a: { b: { '$push': [] } } }
+);
+
+apply_update_unchanged(test,
+  "unshift empty array",
+  { a: { b: [1, 2, 3] } },
+  { a: { b: { '$unshift': [] } } }
+);
+
+apply_update_unchanged(test,
+  "apply unchanged",
+  { a: { b: 0, z: 2 }, c: 2 },
+  { a: { b: { '$apply': (val) => val * 2} } }
+);
+
+apply_update_unchanged(test,
+  "merge unchanged",
+  { a: 1, b: 2 },
+  { $merge: { b: 2 } }
 );
 
 
