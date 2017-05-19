@@ -205,28 +205,28 @@ apply_update(test,
 apply_update(test,
   "apply",
   { a: { b: 3, z: 2 }, c: 2 },
-  { a: { b: { '$apply': (val) => val * 2} } },
+  { a: { b: { '$apply': function(val) { return val * 2 } } } },
   { a: { b: 6, z: 2 }, c: 2 }
 );
 
 apply_update(test,
   "apply, auto-vivify",
   { c: 2 },
-  { a: { b: { '$apply': (val) => 5 } } },
+  { a: { b: { '$apply': function(val) { return 5 } } } },
   { a: { b: 5 }, c: 2 }
 );
 
 apply_update(test,
   "apply, auto-vivify null",
   { a: { b: null }, c: 2 },
-  { a: { b: { '$apply': (val) => 5 } } },
+  { a: { b: { '$apply': function(val) { return 5 } } } },
   { a: { b: 5 }, c: 2 }
 );
 
 apply_update(test,
   "apply array",
   { a: [ 2 ] },
-  { a: { 0: { '$apply': (val) => val * 2 } } },
+  { a: { 0: { '$apply': function(val) { return val * 2 } } } },
   { a: [ 4 ] }
 );
 
@@ -283,7 +283,7 @@ apply_update_unchanged(test,
 apply_update_unchanged(test,
   "apply unchanged",
   { a: { b: 0, z: 2 }, c: 2 },
-  { a: { b: { '$apply': (val) => val * 2} } }
+  { a: { b: { '$apply': function(val) { return val * 2 } } } }
 );
 
 apply_update_unchanged(test,
