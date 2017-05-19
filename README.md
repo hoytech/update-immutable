@@ -132,6 +132,15 @@ Note however that autovivifying an array into existence with a push (for example
 As of version 1.0.6, this module also autovivifies `null` into existence just as it does `undefined`. This can be useful since setting to `null` is often used instead of deleting an element from a collection.
 
 
+## Preservation of equality
+
+As of version 1.2.0, this module will attempt to preserve reference equality where possible. In other words, if you make an update that doesn't cause the structure to be modified, the original version of the data structure will be returned, not a shallow copy.
+
+For example, none of the following will result in a copy being returned: using `$set` to modify a primitive value to the same value as it was before, `$push`ing an empty list, `$unset`ting a key that isn't present.
+
+Note that for performance reasons it does not do a deep comparison of your modifications, so it will only detect idempotent updates to primitives. Also, due to a limitation, `$splice` will always return a copy even if no changes were made (see Todo section below).
+
+
 ## Incompatibilities
 
 This module is mostly compatible with the react version except for the following:
@@ -165,7 +174,7 @@ I did a short talk on this module which you can [watch on YouTube](https://www.y
 
 ## Todo
 
-If you make an update and change a primitive value to itself, a new container is still shallow-copied and returned. As an optimisation we could check for this and preserve the original container. For example see [this pull request](https://github.com/facebook/react/pull/6353). Deep-comparing non-primitive updates is probably not worth it though.
+`$splice` will always shallow-copy the array, even if the splice operations cause no modifications to the array.
 
 
 ## Copyright

@@ -1,3 +1,6 @@
+1.2.0
+  * Preserve reference equality where possible (thanks George Kormaris)
+
 1.1.2  2015-05-01
   * $unset now accepts either a single key or an array of keys
   * Document all the commands
