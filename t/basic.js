@@ -244,9 +244,15 @@ apply_update_unchanged(test,
 );
 
 apply_update_unchanged(test,
-  "unset object, already unset",
+  "unset but already unset",
   { a: { b: 1 } },
   { a: { '$unset': 'c' } }
+);
+
+apply_update_unchanged(test,
+  "unset multiple but already unset",
+  { a: { b: 1 } },
+  { a: { '$unset': ['c', 'd'] } }
 );
 
 apply_update_unchanged(test,
