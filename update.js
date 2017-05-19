@@ -126,22 +126,30 @@ export default function update(view, upd) {
 
   if (Array.isArray(view)) {
     let output = shallowCopyArray(view);
+    let changed = false;
 
     for (let key in upd) {
-        let int = parseInt(key);
-        if (key != int) throw(new Error("non-numeric key in array update")); // deliberate != instead of !==
+        const int = parseInt(key);
+        if (key != int) throw new Error('non-numeric key in array update'); // deliberate != instead of !==
         output[int] = update(output[int], upd[key]);
+        if (output[int] !== view[int]) {
+          changed = true;
+        }
     }
 
-    return output;
+    return changed ? output : view;
   } else if (typeof(view) === 'object') {
     let output = shallowCopyObject(view);
+    let changed = false;
 
     for (let key in upd) {
         output[key] = update(output[key], upd[key]);
+        if (output[key] !== view[key]) {
+          changed = true;
+        }
     }
 
-    return output;
+    return changed ? output : view;
   }
 
   throw(new Error("view not an array or hash"));
