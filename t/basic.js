@@ -279,6 +279,12 @@ apply_update_unchanged(test,
   { $merge: { b: 2 } }
 );
 
+apply_update_unchanged(test,
+  "merge unchanged",
+  { a: 1, b: 2 },
+  { $merge: {} }
+);
+
 
 // misc
 
