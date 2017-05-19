@@ -153,7 +153,7 @@ export default function update(view, upd) {
 
     for (let key in upd) {
         const int = parseInt(key);
-        if (key != int) throw new Error('non-numeric key in array update'); // deliberate != instead of !==
+        if (key != int) throw(new Error("non-numeric key in array update")); // deliberate != instead of !==
         output[int] = update(output[int], upd[key]);
         if (output[int] !== view[int]) {
           changed = true;
