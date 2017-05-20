@@ -1,3 +1,8 @@
+1.2.1  2017-05-20
+  * A few more tests for reference equality
+  * TravisCI build status
+  * Doc updates
+
 1.2.0  2017-05-19
   * Preserve reference equality where possible (thanks George Kormaris)
 
