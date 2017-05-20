@@ -60,7 +60,7 @@ However, this module is independent of react, and is also suitable for passing u
         update({ a: { b: 1 } }, { $merge: { a: { c: 1 } } })
         => { a: { c: 1 } }
 
-    But in this case, the object containing `b` is fully replaced. There are various ways to solve this, for example using one of the many deep merging modules on npm, for example [deepmerge](https://www.npmjs.com/package/deepmerge):
+    But in this case, the object containing `b` is fully replaced. There are various ways to solve this, such as using one of the many deep merging modules on npm. Here is an example using [deepmerge](https://www.npmjs.com/package/deepmerge):
 
         var orig = { a: { b: 1 } };
         update(orig, { a: { $set: deepmerge(orig.a, { c: 2 }) } })
@@ -140,7 +140,7 @@ As of version 1.2.0, this module will attempt to preserve reference equality whe
 
 For example, none of the following will result in a copy being returned: using `$set` to modify a primitive value to the same value as it was before, `$push`ing an empty list, `$unset`ting a key that isn't present.
 
-Note that for performance reasons it does not do a deep comparison of your modifications, so it will only detect idempotent updates to primitives. Also, due to a limitation, `$splice` will always return a copy even if no changes were made (see Todo section below).
+Note that for performance reasons it does not do a deep comparison of your modifications, so it will only detect identity updates to primitives. Also, due to a limitation, `$splice` will always return a shallow copy even if no changes were made (see Todo section below).
 
 
 ## Incompatibilities
