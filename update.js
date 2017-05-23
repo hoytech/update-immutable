@@ -175,5 +175,5 @@ export default function update(view, upd) {
     return changed ? output : view;
   }
 
-  throw(new Error("view not an array or hash"));
+  throw(new Error("view not an array or object"));
 }
