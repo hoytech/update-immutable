@@ -1,3 +1,8 @@
+1.2.2  2017-07-11
+  * Preserve non-numeric array keys when shallow copying
+  * Improve error message slightly
+  * Minor doc updates
+
 1.2.1  2017-05-20
   * A few more tests for reference equality
   * TravisCI build status
