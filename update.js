@@ -6,12 +6,8 @@ React-compatible data-structure update utility
 */
 
 
-function shallowCopyObject(x) {
+function shallowCopy(x) {
   return Object.assign(new x.constructor(), x);
-}
-
-function shallowCopyArray(x) {
-    return x.concat();
 }
 
 
@@ -29,7 +25,7 @@ export default function update(view, upd) {
 
     if (typeof(view) !== 'object') throw(new Error("view is not an object in unset"));
 
-    let new_view = shallowCopyObject(view);
+    let new_view = shallowCopy(view);
 
     let changed = false;
 
@@ -67,7 +63,7 @@ export default function update(view, upd) {
 
     if (!changed) return view;
 
-    let new_view = shallowCopyObject(view);
+    let new_view = shallowCopy(view);
 
     Object.assign(new_view, upd['$merge']);
 
@@ -82,7 +78,7 @@ export default function update(view, upd) {
 
     if (upd['$push'].length === 0) return view;
 
-    let new_view = shallowCopyArray(view);
+    let new_view = shallowCopy(view);
 
     for (let e of upd['$push']) {
       new_view.push(e);
@@ -99,7 +95,7 @@ export default function update(view, upd) {
 
     if (upd['$unshift'].length === 0) return view;
 
-    let new_view = shallowCopyArray(view);
+    let new_view = shallowCopy(view);
 
     for (let e of upd['$unshift'].reverse()) {
       new_view.unshift(e);
@@ -114,7 +110,7 @@ export default function update(view, upd) {
     if (!Array.isArray(view)) throw(new Error("view is not an array in splice"));
     if (!Array.isArray(upd['$splice'])) throw(new Error("update is not an array in splice"));
 
-    let new_view = shallowCopyArray(view);
+    let new_view = shallowCopy(view);
 
     for (let s of upd['$splice']) {
       if (!Array.isArray(s)) throw(new Error("update element is not an array"));
@@ -130,10 +126,8 @@ export default function update(view, upd) {
 
     let new_view;
 
-    if (Array.isArray(view)) {
-      new_view = shallowCopyArray(view);
-    } else if (typeof(view) === 'object') {
-      new_view = shallowCopyObject(view);
+    if (Array.isArray(view) || typeof(view) === 'object') {
+      new_view = shallowCopy(view);
     } else if (view !== Object(view)) {
       new_view = view;
     }
@@ -147,8 +141,9 @@ export default function update(view, upd) {
 
   if (view === undefined || view === null) view = {};
 
+  let output = shallowCopy(view);
+
   if (Array.isArray(view)) {
-    let output = shallowCopyArray(view);
     let changed = false;
 
     for (let key in upd) {
@@ -162,7 +157,6 @@ export default function update(view, upd) {
 
     return changed ? output : view;
   } else if (typeof(view) === 'object') {
-    let output = shallowCopyObject(view);
     let changed = false;
 
     for (let key in upd) {

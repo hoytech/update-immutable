@@ -14,12 +14,8 @@ React-compatible data-structure update utility
 2-clause BSD license
 */
 
-function shallowCopyObject(x) {
+function shallowCopy(x) {
   return Object.assign(new x.constructor(), x);
-}
-
-function shallowCopyArray(x) {
-  return x.concat();
 }
 
 function update(view, upd) {
@@ -36,7 +32,7 @@ function update(view, upd) {
 
     if ((typeof view === 'undefined' ? 'undefined' : _typeof(view)) !== 'object') throw new Error("view is not an object in unset");
 
-    var new_view = shallowCopyObject(view);
+    var new_view = shallowCopy(view);
 
     var changed = false;
 
@@ -116,7 +112,7 @@ function update(view, upd) {
 
     if (!_changed) return view;
 
-    var _new_view = shallowCopyObject(view);
+    var _new_view = shallowCopy(view);
 
     Object.assign(_new_view, upd['$merge']);
 
@@ -131,7 +127,7 @@ function update(view, upd) {
 
     if (upd['$push'].length === 0) return view;
 
-    var _new_view2 = shallowCopyArray(view);
+    var _new_view2 = shallowCopy(view);
 
     var _iteratorNormalCompletion3 = true;
     var _didIteratorError3 = false;
@@ -169,7 +165,7 @@ function update(view, upd) {
 
     if (upd['$unshift'].length === 0) return view;
 
-    var _new_view3 = shallowCopyArray(view);
+    var _new_view3 = shallowCopy(view);
 
     var _iteratorNormalCompletion4 = true;
     var _didIteratorError4 = false;
@@ -205,7 +201,7 @@ function update(view, upd) {
     if (!Array.isArray(view)) throw new Error("view is not an array in splice");
     if (!Array.isArray(upd['$splice'])) throw new Error("update is not an array in splice");
 
-    var _new_view4 = shallowCopyArray(view);
+    var _new_view4 = shallowCopy(view);
 
     var _iteratorNormalCompletion5 = true;
     var _didIteratorError5 = false;
@@ -242,10 +238,8 @@ function update(view, upd) {
 
     var _new_view5 = void 0;
 
-    if (Array.isArray(view)) {
-      _new_view5 = shallowCopyArray(view);
-    } else if ((typeof view === 'undefined' ? 'undefined' : _typeof(view)) === 'object') {
-      _new_view5 = shallowCopyObject(view);
+    if (Array.isArray(view) || (typeof view === 'undefined' ? 'undefined' : _typeof(view)) === 'object') {
+      _new_view5 = shallowCopy(view);
     } else if (view !== Object(view)) {
       _new_view5 = view;
     }
@@ -258,8 +252,9 @@ function update(view, upd) {
 
   if (view === undefined || view === null) view = {};
 
+  var output = shallowCopy(view);
+
   if (Array.isArray(view)) {
-    var output = shallowCopyArray(view);
     var _changed2 = false;
 
     for (var key in upd) {
@@ -273,18 +268,17 @@ function update(view, upd) {
 
     return _changed2 ? output : view;
   } else if ((typeof view === 'undefined' ? 'undefined' : _typeof(view)) === 'object') {
-    var _output = shallowCopyObject(view);
     var _changed3 = false;
 
     for (var _key in upd) {
-      _output[_key] = update(_output[_key], upd[_key]);
-      if (_output[_key] !== view[_key]) {
+      output[_key] = update(output[_key], upd[_key]);
+      if (output[_key] !== view[_key]) {
         _changed3 = true;
       }
     }
 
-    return _changed3 ? _output : view;
+    return _changed3 ? output : view;
   }
 
-  throw new Error("view not an array or hash");
+  throw new Error("view not an array or object");
 }
