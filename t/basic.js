@@ -1,9 +1,8 @@
+"use strict";
+
 var update = require("../dist/update").default;
+var clone = require('clone');
 
-
-function clone(a) {
-   return JSON.parse(JSON.stringify(a));
-}
 
 function apply_update(test, desc, input, update_v, expected) {
     var orig = clone(input);
@@ -70,6 +69,21 @@ apply_update(test,
   { a: { 4: { '$set': 9 } } },
   { a: [ 0,,,,9 ] }
 );
+
+{
+  let input = { items: [ "a", "b" ] };
+  input.items.top = 0;
+
+  let output = { items: [ "a", "c" ] };
+  output.items.top = 0;
+
+  apply_update(test,
+    "set array, non-numeric keys are preserved",
+    input,
+    { items: { 1: { '$set': "c" } } },
+    output
+  );
+}
 
 // unset
 
@@ -154,6 +168,21 @@ apply_update(test,
   { a: { b: [ 1, 2 ] } }
 );
 
+{
+  let input = { items: [ "a", "b" ] };
+  input.items.top = 0;
+
+  let output = { items: [ "a", "b", "c" ] };
+  output.items.top = 0;
+
+  apply_update(test,
+    "push, non-numeric keys are preserved",
+    input,
+    { items: { '$push': ["c"] } },
+    output
+  );
+}
+
 // unshift
 
 apply_update(test,
@@ -169,6 +198,21 @@ apply_update(test,
   { a: { '$unshift': [ 1, 2 ] } },
   { a: [ 1, 2 ] }
 );
+
+{
+  let input = { items: [ "a", "b" ] };
+  input.items.top = 0;
+
+  let output = { items: [ "c", "a", "b" ] };
+  output.items.top = 0;
+
+  apply_update(test,
+    "unshift, non-numeric keys are preserved",
+    input,
+    { items: { '$unshift': ["c"] } },
+    output
+  );
+}
 
 // splice
 
