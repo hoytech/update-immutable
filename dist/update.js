@@ -272,7 +272,7 @@ function update(view, upd) {
 
     for (var _key in upd) {
       output[_key] = update(output[_key], upd[_key]);
-      if (output[_key] !== view[_key]) {
+      if (output[_key] !== view[_key] || output[_key] === undefined) {
         _changed3 = true;
       }
     }
