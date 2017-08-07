@@ -1,3 +1,8 @@
+1.2.3  2017-08-07
+  * Ensure using $set to set an object key to undefined works
+  * Add tests to demonstrate $set, $push, and $unshift preserve
+    non-numeric keys
+
 1.2.2  2017-07-11
   * Preserve non-numeric array keys when shallow copying
   * Improve error message slightly
