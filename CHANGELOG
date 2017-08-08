@@ -1,3 +1,7 @@
+1.2.4  2017-08-08
+  * When setting a field to undefined that is already undefined, don't
+    return new object
+
 1.2.3  2017-08-07
   * Ensure using $set to set an object key to undefined works
   * Add tests to demonstrate $set, $push, and $unshift preserve
