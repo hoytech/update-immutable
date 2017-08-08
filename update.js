@@ -161,7 +161,7 @@ export default function update(view, upd) {
 
     for (let key in upd) {
         output[key] = update(output[key], upd[key]);
-        if (output[key] !== view[key] || output[key] === undefined) {
+        if (output[key] !== view[key] || (output[key] === undefined && !view.hasOwnProperty(key))) {
           changed = true;
         }
     }

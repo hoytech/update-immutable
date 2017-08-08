@@ -99,6 +99,18 @@ apply_update(test,
   { a: { x: null, y: 1 } }
 );
 
+apply_update_unchanged(test,
+  "set key to undefined, was already undefined",
+  { a: { y: 1, x: undefined } },
+  { a: { x: { '$set': undefined } } }
+);
+
+apply_update_unchanged(test,
+  "set key to null, was already null",
+  { a: { y: 1, x: null } },
+  { a: { x: { '$set': null } } }
+);
+
 // unset
 
 apply_update(test,
