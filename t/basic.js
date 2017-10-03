@@ -33,6 +33,13 @@ apply_update(test,
   {},
   { a: { $set: 1} },
   { a: 1 }
+)
+
+apply_update_unchanged(test,
+  "no-op",
+  { a: 1 },
+  {},
+  { a: 1 }
 );
 
 apply_update(test,
