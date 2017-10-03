@@ -174,6 +174,32 @@ There is a companion perl module [Update::Immutable](https://metacpan.org/pod/Up
 If you do plan on performing server-client updates, you should avoid using `$apply` since functions generally cannot be serialised for transfer over the network. `$apply` is useful for react-compatibility and/or purely in-browser updates.
 
 
+## updatePath
+
+**EXPERIMENTAL FEATURE**: `updatePath` is currently experimental and may be changed or deprecated in the future.
+
+Rather than encode your updates as a nested structure, the `updatePath` function allows you to encode them as a string. The function is used like so:
+
+    var modified = updatePath(original, operation, path, parameter);
+
+* `original`: The structure you wish to update.
+* `operation`: A normal `update` command (documented above), **without** the `$` prefix.
+* `path`: A `.`-separated list of keys or array indices to recurse into. Currently keys containing `.` are not supported since there is no way to escape them.
+* `parameter`: The leaf element in the `update` command.
+
+Example:
+
+    > updatePath({ a: { b: 1 } }, 'set', 'a.b', 2)
+    { a: { b: 2 } }
+
+Note that keys containing `$`, including ones that are special `update` command keys are supported:
+
+    updatePath({ a: { $set: [2] } }, 'push', 'a.$set', [3])
+    { a: { '$set': [ 2, 3 ] } }
+
+One thing to be aware of is that `updatePath` may be less efficient than `update`. Besides the obvious overhead of parsing the path string, making multiple updates in a row with `updatePath` will require multiple recursive traversals of the structure (and multiple shallow copies), whereas a single `update` with multiple commands embedded can ammortise this overhead over one call.
+
+
 ## See-also
 
 Please add any bug reports or feature requests to the [update-immutable repo on github](https://github.com/hoytech/update-immutable).

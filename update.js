@@ -10,7 +10,6 @@ function shallowCopy(x) {
   return Object.assign(new x.constructor(), x);
 }
 
-
 export default function update(view, upd) {
   if (typeof(upd) !== 'object') throw(new Error("update is not an object"));
 
@@ -172,4 +171,20 @@ export default function update(view, upd) {
   }
 
   throw(new Error("view not an array or object"));
+}
+
+
+function compilePath(path, leaf) {
+  let m = path.match(/^[^.]+/);
+  if (m) {
+    let k = m[0];
+    if (k.startsWith('$')) k = '$' + k;
+    return { [k]: compilePath(path.substr(m[0].length+1), leaf) };
+  }
+
+  return leaf;
+}
+
+export function updatePath(view, op, path, params) {
+  return update(view, compilePath(path, { ['$' + op]: params }));
 }
