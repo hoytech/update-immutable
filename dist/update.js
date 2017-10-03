@@ -7,6 +7,10 @@ Object.defineProperty(exports, "__esModule", {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 exports.default = update;
+exports.updatePath = updatePath;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /*
 React-compatible data-structure update utility
 
@@ -283,4 +287,19 @@ function update(view, upd) {
   }
 
   throw new Error("view not an array or object");
+}
+
+function compilePath(path, leaf) {
+  var m = path.match(/^[^.]+/);
+  if (m) {
+    var k = m[0];
+    if (k.startsWith('$')) k = '$' + k;
+    return _defineProperty({}, k, compilePath(path.substr(m[0].length + 1), leaf));
+  }
+
+  return leaf;
+}
+
+function updatePath(view, op, path, params) {
+  return update(view, compilePath(path, _defineProperty({}, '$' + op, params)));
 }

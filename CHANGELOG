@@ -1,3 +1,6 @@
+1.3.1  2017-10-03
+  * Experimental feature: updatePath
+
 1.3.0  2017-10-03
   * Operation escaping: Now you can update updates with update. For
     example, if you have a key you want to update called "$set" then
