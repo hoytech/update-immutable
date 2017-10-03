@@ -271,7 +271,9 @@ function update(view, upd) {
     var _changed3 = false;
 
     for (var _key in upd) {
-      output[_key] = update(output[_key], upd[_key]);
+      var upd_key = _key;
+      if (_key.startsWith("$$")) _key = _key.substr(1);
+      output[_key] = update(output[_key], upd[upd_key]);
       if (output[_key] !== view[_key] || output[_key] === undefined && !view.hasOwnProperty(_key)) {
         _changed3 = true;
       }
