@@ -197,7 +197,7 @@ Note that keys containing `$`, including ones that are special `update` command 
     updatePath({ a: { $set: [2] } }, 'push', 'a.$set', [3])
     { a: { '$set': [ 2, 3 ] } }
 
-One thing to be aware of is that `updatePath` may be less efficient than `update`. Besides the obvious overhead of parsing the path string, making multiple updates in a row with `updatePath` will require multiple recursive traversals of the structure (and multiple shallow copies), whereas a single `update` with multiple commands embedded can ammortise this overhead over one call.
+One thing to be aware of is that `updatePath` may be less efficient than `update`. Besides the obvious overhead of parsing the path string, making multiple updates in a row with `updatePath` will require multiple recursive traversals of the structure (and multiple shallow copies), whereas a single `update` with multiple commands embedded can amortise this overhead over one call.
 
 
 ## See-also
