@@ -71,6 +71,8 @@ However, this module is independent of react, and is also suitable for passing u
         update({ a: [1, 2] }, { a: { $push: [3, 4] } })
         => { a: [ 1, 2, 3, 4 ] }
 
+    **NOTE**: The value to push must be an array otherwise you will see the error `update is not an array in push`. This is because `$push` supports pushing multiple elements at once and the value itself could be an array. This goes for `$unshift` too.
+
 * `$unshift`: Prepends new values to the beginning of an array. Example:
 
         update({ a: [1, 2] }, { a: { $unshift: [3, 4] } })
@@ -113,7 +115,7 @@ The following new features/bugfixes have been implemented:
   If you have a key in an object that is a reserved operation key, such as `$set`, and you wish to modify its value or use it as a path in an operation, the react implementation would not work for this. This module implements escaping where you can prefix such keys with an extra `$`. For example:
 
       > update({ $set: 1 }, { $$set: { $set: 2 } })
-      { $set: 2 }
+      { '$set': 2 }
 
   This is useful in cases where you would like to use `update` itself to modify updates.
 
