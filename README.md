@@ -108,6 +108,15 @@ The following new features/bugfixes have been implemented:
 
   [Autovivification](https://en.wikipedia.org/wiki/Autovivification) allows you to modify a nested data structure even if the nesting data-structures don't yet exist. They will be created so as to satisfy the update. This simplifies many use-cases, for example you don't need to maintain an initial-state skeleton. See below for more details.
 
+* **Operation escaping**
+
+  If you have a key in an object that is a reserved operation key, such as `$set`, and you wish to modify its value or use it as a path in an operation, the react implementation would not work for this. This module implements escaping where you can prefix such keys with an extra `$`. For example:
+
+      > update({ $set: 1 }, { $$set: { $set: 2 } })
+      { $set: 2 }
+
+  This is useful in cases where you would like to use `update` itself to modify updates.
+
 
 ## Autovivification
 
@@ -150,6 +159,10 @@ This module is mostly compatible with the react version except for the following
 * **`$unshift` behaviour**
 
   As described above, when passing multiple items in a single `$unshift` update, the order of the items is preserved, unlike react which reverses the list.
+
+* **Operation escaping**
+
+  If you have a key that begins with `$$` and you use this as the path in an operation, one of the `$` signs will be stripped in order to implement operation escaping. If you have such keys, add an extra `$` sign in front of them when porting from the react implementation.
 
 
 ## Server-side

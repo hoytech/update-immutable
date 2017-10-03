@@ -118,6 +118,20 @@ apply_update_unchanged(test,
   { a: { x: { '$set': null } } }
 );
 
+apply_update(test,
+  "editing an update with update",
+  { a: { $set: 1 } },
+  { a: { $$set: { $set: 2 } } },
+  { a: { $set: 2 } }
+);
+
+apply_update(test,
+  "editing an update with update, nested key",
+  { a: { $set: { b: 1 } } },
+  { a: { $$set: { b: { $set: 2 } } } },
+  { a: { $set: { b: 2 } } }
+);
+
 // unset
 
 apply_update(test,
