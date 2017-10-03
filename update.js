@@ -174,12 +174,22 @@ export default function update(view, upd) {
 }
 
 
+
+function escapePathKey(k) {
+  if (k.startsWith('$')) k = '$' + k;
+  return k;
+}
+
 function compilePath(path, leaf) {
-  let m = path.match(/^[^.]+/);
-  if (m) {
-    let k = m[0];
-    if (k.startsWith('$')) k = '$' + k;
-    return { [k]: compilePath(path.substr(m[0].length+1), leaf) };
+  if (Array.isArray(path)) {
+    if (path.length > 0) {
+      return { [escapePathKey(path[0])]: compilePath(path.slice(1), leaf) };
+    }
+  } else {
+    let m = path.match(/^[^.]+/);
+    if (m) {
+      return { [escapePathKey(m[0])]: compilePath(path.substr(m[0].length+1), leaf) };
+    }
   }
 
   return leaf;

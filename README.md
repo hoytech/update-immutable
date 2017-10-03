@@ -184,15 +184,20 @@ Rather than encode your updates as a nested structure, the `updatePath` function
 
 * `original`: The structure you wish to update.
 * `operation`: A normal `update` command (documented above), **without** the `$` prefix.
-* `path`: A `.`-separated list of keys or array indices to recurse into. Currently keys containing `.` are not supported since there is no way to escape them.
+* `path`: A string containing a `.`-separated list of, or an array of keys or array indices to recurse into. If keys may contain `.` characters you should not use the string version since there is no way to escape `.`.
 * `parameter`: The leaf element in the `update` command.
 
-Example:
+Example using a string path:
 
     > updatePath({ a: { b: 1 } }, 'set', 'a.b', 2)
     { a: { b: 2 } }
 
-Note that keys containing `$`, including ones that are special `update` command keys are supported:
+Example using an array path:
+
+    > updatePath({ a: { b: 1 } }, 'set', ['a', 'b'], 2)
+    { a: { b: 2 } }
+
+Note that keys containing `$`, including ones that are special `update` command keys, are supported:
 
     updatePath({ a: { $set: [2] } }, 'push', 'a.$set', [3])
     { a: { '$set': [ 2, 3 ] } }
