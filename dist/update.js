@@ -289,12 +289,21 @@ function update(view, upd) {
   throw new Error("view not an array or object");
 }
 
+function escapePathKey(k) {
+  if (k.startsWith('$')) k = '$' + k;
+  return k;
+}
+
 function compilePath(path, leaf) {
-  var m = path.match(/^[^.]+/);
-  if (m) {
-    var k = m[0];
-    if (k.startsWith('$')) k = '$' + k;
-    return _defineProperty({}, k, compilePath(path.substr(m[0].length + 1), leaf));
+  if (Array.isArray(path)) {
+    if (path.length > 0) {
+      return _defineProperty({}, escapePathKey(path[0]), compilePath(path.slice(1), leaf));
+    }
+  } else {
+    var m = path.match(/^[^.]+/);
+    if (m) {
+      return _defineProperty({}, escapePathKey(m[0]), compilePath(path.substr(m[0].length + 1), leaf));
+    }
   }
 
   return leaf;
