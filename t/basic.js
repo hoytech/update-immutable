@@ -422,7 +422,7 @@ apply_update(test,
   "unset same-level recursion",
   { a: 1 },
   { $unset: 'a', b: { $set: 2 } },
-  { b: 2 },
+  { b: 2 }
 );
 
 apply_update(test,
@@ -464,7 +464,7 @@ apply_update(test,
   "unset with auto-vivify at same-level of recursion",
   { a: 1 },
   { $unset: 'a', b: { c: { $set: 2 } } },
-  { b: { c: 2 } },
+  { b: { c: 2 } }
 );
 
 
