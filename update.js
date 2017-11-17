@@ -19,56 +19,6 @@ export default function update(view, upd) {
     return upd['$set'];
   }
 
-  if (upd.hasOwnProperty('$unset')) {
-    if (view === undefined || view === null) view = {};
-
-    if (typeof(view) !== 'object') throw(new Error("view is not an object in unset"));
-
-    let new_view = shallowCopy(view);
-
-    let changed = false;
-
-    if (typeof(upd['$unset']) === 'object') {
-      for (let k of upd['$unset']) {
-        if (k in new_view) {
-          delete new_view[k];
-          changed = true;
-        }
-      }
-    } else {
-      if (upd['$unset'] in new_view) {
-        delete new_view[upd['$unset']];
-        changed = true;
-      }
-    }
-
-    return changed ? new_view : view;
-  }
-
-  if (upd.hasOwnProperty('$merge')) {
-    if (view === undefined || view === null) view = {};
-
-    if (typeof(view) !== 'object') throw(new Error("view is not an object in merge"));
-    if (typeof(upd) !== 'object') throw(new Error("update is not an object in merge"));
-
-    let changed = false;
-
-    for (let k of Object.keys(upd['$merge'])) {
-      if (!(k in view) || upd['$merge'][k] !== view[k]) {
-        changed = true;
-        break;
-      }
-    }
-
-    if (!changed) return view;
-
-    let new_view = shallowCopy(view);
-
-    Object.assign(new_view, upd['$merge']);
-
-    return new_view;
-  }
-
   if (upd.hasOwnProperty('$push')) {
     if (view === undefined || view === null) view = [];
 
@@ -136,38 +86,72 @@ export default function update(view, upd) {
   }
 
 
-  // Recurse to handle nested commands in upd:
+  // Commands that can be combined with same-level recursion
 
   if (view === undefined || view === null) view = {};
 
-  let output = shallowCopy(view);
+  let new_view = shallowCopy(view);
+  let changed = false;
+
+  if (upd.hasOwnProperty('$merge')) {
+    if (typeof(view) !== 'object') throw(new Error("view is not an object in merge"));
+    if (typeof(upd) !== 'object') throw(new Error("update is not an object in merge"));
+
+    for (let k of Object.keys(upd['$merge'])) {
+      if (!(k in view) || upd['$merge'][k] !== view[k]) {
+        changed = true;
+        break;
+      }
+    }
+
+    if (changed) Object.assign(new_view, upd['$merge']);
+  }
+
+  if (upd.hasOwnProperty('$unset')) {
+    if (typeof(view) !== 'object') throw(new Error("view is not an object in unset"));
+
+    if (typeof(upd['$unset']) === 'object') {
+      for (let k of upd['$unset']) {
+        if (k in new_view) {
+          delete new_view[k];
+          changed = true;
+        }
+      }
+    } else {
+      if (upd['$unset'] in new_view) {
+        delete new_view[upd['$unset']];
+        changed = true;
+      }
+    }
+  }
+
+
+  // Recurse to handle nested commands in upd:
 
   if (Array.isArray(view)) {
-    let changed = false;
-
     for (let key in upd) {
         const int = parseInt(key);
         if (key != int) throw(new Error("non-numeric key in array update")); // deliberate != instead of !==
-        output[int] = update(output[int], upd[key]);
-        if (output[int] !== view[int]) {
+        new_view[int] = update(new_view[int], upd[key]);
+        if (new_view[int] !== view[int]) {
           changed = true;
         }
     }
 
-    return changed ? output : view;
+    return changed ? new_view : view;
   } else if (typeof(view) === 'object') {
-    let changed = false;
-
     for (let key in upd) {
         let upd_key = key;
-        if (key.startsWith("$$")) key = key.substr(1);
-        output[key] = update(output[key], upd[upd_key]);
-        if (output[key] !== view[key] || (output[key] === undefined && !view.hasOwnProperty(key))) {
-          changed = true;
-        }
+        if (!(key[0] === '$' && key[1] !== '$')) {
+          if (key.startsWith("$$")) key = key.substr(1);
+          new_view[key] = update(new_view[key], upd[upd_key]);
+          if (new_view[key] !== view[key] || (new_view[key] === undefined && !view.hasOwnProperty(key))) {
+            changed = true;
+          }
+       }
     }
 
-    return changed ? output : view;
+    return changed ? new_view : view;
   }
 
   throw(new Error("view not an array or object"));

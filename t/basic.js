@@ -33,7 +33,7 @@ apply_update(test,
   {},
   { a: { $set: 1} },
   { a: 1 }
-)
+);
 
 apply_update_unchanged(test,
   "no-op",
@@ -416,6 +416,55 @@ apply_update(test,
   { a: { b: 1 } },
   { c: { '$set': 2 }, a: { '$merge': { e: 3 } } },
   { a: { b: 1, e: 3 }, c: 2 }
+);
+
+apply_update(test,
+  "unset same-level recursion",
+  { a: 1 },
+  { $unset: 'a', b: { $set: 2 } },
+  { b: 2 },
+);
+
+apply_update(test,
+  "unset same-level recursion 2",
+  { a: { b: 1 }, c: [2] },
+  { c: { $splice: [ [ 0, 1 ] ] }, $unset: 'a' },
+  { c: [], }
+);
+
+apply_update(test,
+  "unset same-level recursion 3",
+  { a: { b: 1 }, c: [2] },
+  { c: { $set: 'dog' }, $unset: 'a' },
+  { c: 'dog', }
+);
+
+apply_update(test,
+  "unset same-level recursion 4",
+  { a: { b: 1 }, c: [2] },
+  { a: { $unset: 'b' }, $unset: 'c' },
+  { a: {}, }
+);
+
+apply_update(test,
+  "merge same-level recursion",
+  { a: 1, b: 2, c: 9 },
+  { '$merge': { c: 3, d: { e: 4 } }, test: { $set: 123 } },
+  { a: 1, b: 2, c: 3, d: { e: 4 }, test: 123 }
+);
+
+apply_update(test,
+  "merge and unset same-level recursion",
+  { a: 1, b: 2, c: 9 },
+  { '$merge': { c: 3, d: { e: 4 } }, test: { $set: 123 }, $unset: 'a', },
+  { b: 2, c: 3, d: { e: 4 }, test: 123 }
+);
+
+apply_update(test,
+  "unset with auto-vivify at same-level of recursion",
+  { a: 1 },
+  { $unset: 'a', b: { c: { $set: 2 } } },
+  { b: { c: 2 } },
 );
 
 

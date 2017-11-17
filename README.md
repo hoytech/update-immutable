@@ -154,6 +154,22 @@ For example, none of the following will result in a copy being returned: using `
 Note that for performance reasons it does not do a deep comparison of your modifications, so it will only detect identity updates to primitives. Also, due to a limitation, `$splice` will always return a shallow copy even if no changes were made (see Todo section below).
 
 
+## Multiple updates
+
+If you have multiple commands at the same level of an update, `$set` will always take priority and all of the other commands, as well as recursing into other keys, will be ignored.
+
+For arrays, the first command found of `$push`, `$unshift`, or `$splice` will take priority, everything else will be ignored, and it will not recurse into other array indices (this may be fixed in the future).
+
+After checking the above, if `$apply` is found then it will be executed. All other commands will be ignored and it will not recurse into other keys.
+
+However, the `$unset` and `$merge` commands may be combined with each-other and same-level keys will be recursed into. The `$merge` will happen before `$unset` so you may unset keys added by the merge.
+
+For example, here is how you can set one key and remove another in the same update:
+
+    > update({ a: 1 }, { $unset: 'a', b: { $set: 2 } })
+    { b: 2 }
+
+
 ## Incompatibilities
 
 This module is mostly compatible with the react version except for the following:
@@ -223,6 +239,8 @@ I did a short talk on this module which you can [watch on YouTube](https://www.y
 ## Todo
 
 `$splice` will always shallow-copy the array, even if the splice operations cause no modifications to the array.
+
+Currently combining `$splice`, `$push`, and `$unshift` with each-other or with array indices updates at the same level does not work.
 
 
 ## Copyright
