@@ -31,73 +31,63 @@ function update(view, upd) {
     return upd['$set'];
   }
 
-  if (upd.hasOwnProperty('$unset')) {
-    if (view === undefined || view === null) view = {};
+  if (upd.hasOwnProperty('$push')) {
+    if (view === undefined || view === null) view = [];
 
-    if ((typeof view === 'undefined' ? 'undefined' : _typeof(view)) !== 'object') throw new Error("view is not an object in unset");
+    if (!Array.isArray(view)) throw new Error("view is not an array in push");
+    if (!Array.isArray(upd['$push'])) throw new Error("update is not an array in push");
 
-    var new_view = shallowCopy(view);
+    if (upd['$push'].length === 0) return view;
 
-    var changed = false;
+    var _new_view = shallowCopy(view);
 
-    if (_typeof(upd['$unset']) === 'object') {
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
 
-      try {
-        for (var _iterator = upd['$unset'][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var k = _step.value;
+    try {
+      for (var _iterator = upd['$push'][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var e = _step.value;
 
-          if (k in new_view) {
-            delete new_view[k];
-            changed = true;
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
+        _new_view.push(e);
       }
-    } else {
-      if (upd['$unset'] in new_view) {
-        delete new_view[upd['$unset']];
-        changed = true;
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
       }
     }
 
-    return changed ? new_view : view;
+    return _new_view;
   }
 
-  if (upd.hasOwnProperty('$merge')) {
-    if (view === undefined || view === null) view = {};
+  if (upd.hasOwnProperty('$unshift')) {
+    if (view === undefined || view === null) view = [];
 
-    if ((typeof view === 'undefined' ? 'undefined' : _typeof(view)) !== 'object') throw new Error("view is not an object in merge");
-    if ((typeof upd === 'undefined' ? 'undefined' : _typeof(upd)) !== 'object') throw new Error("update is not an object in merge");
+    if (!Array.isArray(view)) throw new Error("view is not an array in unshift");
+    if (!Array.isArray(upd['$unshift'])) throw new Error("update is not an array in unshift");
 
-    var _changed = false;
+    if (upd['$unshift'].length === 0) return view;
+
+    var _new_view2 = shallowCopy(view);
 
     var _iteratorNormalCompletion2 = true;
     var _didIteratorError2 = false;
     var _iteratorError2 = undefined;
 
     try {
-      for (var _iterator2 = Object.keys(upd['$merge'])[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-        var _k = _step2.value;
+      for (var _iterator2 = upd['$unshift'].reverse()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var _e = _step2.value;
 
-        if (!(_k in view) || upd['$merge'][_k] !== view[_k]) {
-          _changed = true;
-          break;
-        }
+        _new_view2.unshift(_e);
       }
     } catch (err) {
       _didIteratorError2 = true;
@@ -114,34 +104,27 @@ function update(view, upd) {
       }
     }
 
-    if (!_changed) return view;
-
-    var _new_view = shallowCopy(view);
-
-    Object.assign(_new_view, upd['$merge']);
-
-    return _new_view;
+    return _new_view2;
   }
 
-  if (upd.hasOwnProperty('$push')) {
+  if (upd.hasOwnProperty('$splice')) {
     if (view === undefined || view === null) view = [];
 
-    if (!Array.isArray(view)) throw new Error("view is not an array in push");
-    if (!Array.isArray(upd['$push'])) throw new Error("update is not an array in push");
+    if (!Array.isArray(view)) throw new Error("view is not an array in splice");
+    if (!Array.isArray(upd['$splice'])) throw new Error("update is not an array in splice");
 
-    if (upd['$push'].length === 0) return view;
-
-    var _new_view2 = shallowCopy(view);
+    var _new_view3 = shallowCopy(view);
 
     var _iteratorNormalCompletion3 = true;
     var _didIteratorError3 = false;
     var _iteratorError3 = undefined;
 
     try {
-      for (var _iterator3 = upd['$push'][Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-        var e = _step3.value;
+      for (var _iterator3 = upd['$splice'][Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+        var s = _step3.value;
 
-        _new_view2.push(e);
+        if (!Array.isArray(s)) throw new Error("update element is not an array");
+        _new_view3.splice.apply(_new_view3, s);
       }
     } catch (err) {
       _didIteratorError3 = true;
@@ -158,28 +141,48 @@ function update(view, upd) {
       }
     }
 
-    return _new_view2;
+    return _new_view3;
   }
 
-  if (upd.hasOwnProperty('$unshift')) {
-    if (view === undefined || view === null) view = [];
+  if (upd.hasOwnProperty('$apply')) {
+    if (view === undefined || view === null) view = {};
+    if (typeof upd['$apply'] !== 'function') throw new Error("update is not a function in apply");
 
-    if (!Array.isArray(view)) throw new Error("view is not an array in unshift");
-    if (!Array.isArray(upd['$unshift'])) throw new Error("update is not an array in unshift");
+    var _new_view4 = void 0;
 
-    if (upd['$unshift'].length === 0) return view;
+    if (Array.isArray(view) || (typeof view === 'undefined' ? 'undefined' : _typeof(view)) === 'object') {
+      _new_view4 = shallowCopy(view);
+    } else if (view !== Object(view)) {
+      _new_view4 = view;
+    }
 
-    var _new_view3 = shallowCopy(view);
+    if (_new_view4 === undefined) throw new Error("view is not an object, array or primitive");
+    return upd['$apply'](_new_view4);
+  }
+
+  // Commands that can be combined with same-level recursion
+
+  if (view === undefined || view === null) view = {};
+
+  var new_view = shallowCopy(view);
+  var changed = false;
+
+  if (upd.hasOwnProperty('$merge')) {
+    if ((typeof view === 'undefined' ? 'undefined' : _typeof(view)) !== 'object') throw new Error("view is not an object in merge");
+    if ((typeof upd === 'undefined' ? 'undefined' : _typeof(upd)) !== 'object') throw new Error("update is not an object in merge");
 
     var _iteratorNormalCompletion4 = true;
     var _didIteratorError4 = false;
     var _iteratorError4 = undefined;
 
     try {
-      for (var _iterator4 = upd['$unshift'].reverse()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-        var _e = _step4.value;
+      for (var _iterator4 = Object.keys(upd['$merge'])[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+        var k = _step4.value;
 
-        _new_view3.unshift(_e);
+        if (!(k in view) || upd['$merge'][k] !== view[k]) {
+          changed = true;
+          break;
+        }
       }
     } catch (err) {
       _didIteratorError4 = true;
@@ -196,94 +199,74 @@ function update(view, upd) {
       }
     }
 
-    return _new_view3;
+    if (changed) Object.assign(new_view, upd['$merge']);
   }
 
-  if (upd.hasOwnProperty('$splice')) {
-    if (view === undefined || view === null) view = [];
+  if (upd.hasOwnProperty('$unset')) {
+    if ((typeof view === 'undefined' ? 'undefined' : _typeof(view)) !== 'object') throw new Error("view is not an object in unset");
 
-    if (!Array.isArray(view)) throw new Error("view is not an array in splice");
-    if (!Array.isArray(upd['$splice'])) throw new Error("update is not an array in splice");
+    if (_typeof(upd['$unset']) === 'object') {
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
 
-    var _new_view4 = shallowCopy(view);
-
-    var _iteratorNormalCompletion5 = true;
-    var _didIteratorError5 = false;
-    var _iteratorError5 = undefined;
-
-    try {
-      for (var _iterator5 = upd['$splice'][Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-        var s = _step5.value;
-
-        if (!Array.isArray(s)) throw new Error("update element is not an array");
-        _new_view4.splice.apply(_new_view4, s);
-      }
-    } catch (err) {
-      _didIteratorError5 = true;
-      _iteratorError5 = err;
-    } finally {
       try {
-        if (!_iteratorNormalCompletion5 && _iterator5.return) {
-          _iterator5.return();
+        for (var _iterator5 = upd['$unset'][Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var _k = _step5.value;
+
+          if (_k in new_view) {
+            delete new_view[_k];
+            changed = true;
+          }
         }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
       } finally {
-        if (_didIteratorError5) {
-          throw _iteratorError5;
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+            _iterator5.return();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
         }
       }
+    } else {
+      if (upd['$unset'] in new_view) {
+        delete new_view[upd['$unset']];
+        changed = true;
+      }
     }
-
-    return _new_view4;
-  }
-
-  if (upd.hasOwnProperty('$apply')) {
-    if (view === undefined || view === null) view = {};
-    if (typeof upd['$apply'] !== 'function') throw new Error("update is not a function in apply");
-
-    var _new_view5 = void 0;
-
-    if (Array.isArray(view) || (typeof view === 'undefined' ? 'undefined' : _typeof(view)) === 'object') {
-      _new_view5 = shallowCopy(view);
-    } else if (view !== Object(view)) {
-      _new_view5 = view;
-    }
-
-    if (_new_view5 === undefined) throw new Error("view is not an object, array or primitive");
-    return upd['$apply'](_new_view5);
   }
 
   // Recurse to handle nested commands in upd:
 
-  if (view === undefined || view === null) view = {};
-
-  var output = shallowCopy(view);
-
   if (Array.isArray(view)) {
-    var _changed2 = false;
-
     for (var key in upd) {
       var int = parseInt(key);
       if (key != int) throw new Error("non-numeric key in array update"); // deliberate != instead of !==
-      output[int] = update(output[int], upd[key]);
-      if (output[int] !== view[int]) {
-        _changed2 = true;
+      new_view[int] = update(new_view[int], upd[key]);
+      if (new_view[int] !== view[int]) {
+        changed = true;
       }
     }
 
-    return _changed2 ? output : view;
+    return changed ? new_view : view;
   } else if ((typeof view === 'undefined' ? 'undefined' : _typeof(view)) === 'object') {
-    var _changed3 = false;
-
     for (var _key in upd) {
       var upd_key = _key;
-      if (_key.startsWith("$$")) _key = _key.substr(1);
-      output[_key] = update(output[_key], upd[upd_key]);
-      if (output[_key] !== view[_key] || output[_key] === undefined && !view.hasOwnProperty(_key)) {
-        _changed3 = true;
+      if (!(_key[0] === '$' && _key[1] !== '$')) {
+        if (_key.startsWith("$$")) _key = _key.substr(1);
+        new_view[_key] = update(new_view[_key], upd[upd_key]);
+        if (new_view[_key] !== view[_key] || new_view[_key] === undefined && !view.hasOwnProperty(_key)) {
+          changed = true;
+        }
       }
     }
 
-    return _changed3 ? output : view;
+    return changed ? new_view : view;
   }
 
   throw new Error("view not an array or object");
