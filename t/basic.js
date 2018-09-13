@@ -5,19 +5,33 @@ var clone = require('clone');
 
 
 function apply_update(test, desc, input, update_v, expected) {
-    var orig = clone(input);
+  var orig = clone(input);
 
-    var output = update(input, update_v);
+  var output;
 
-    test.deepEqual(output, expected, "update applied correctly: " + desc);
-    test.ok(input != output, "new structure created: " + desc);
-    test.deepEqual(input, orig, "original not modified: " + desc);
+  try {
+    output = update(input, update_v);
+  } catch (err) {
+    console.error("Caught exception in apply_update:", err);
+    throw(err);
+  }
+
+  test.deepEqual(output, expected, "update applied correctly: " + desc);
+  test.ok(input != output, "new structure created: " + desc);
+  test.deepEqual(input, orig, "original not modified: " + desc);
 }
 
 function apply_update_unchanged(test, desc, input, update_v) {
   var orig = clone(input);
 
-  var output = update(input, update_v);
+  var output;
+
+  try {
+    output = update(input, update_v);
+  } catch (err) {
+    console.error("Caught exception in apply_update_unchanged:", err);
+    throw(err);
+  }
 
   test.deepEqual(output, orig, "update applied correctly (no change): " + desc);
   test.ok(input === output, "shallow equality retained: " + desc);
@@ -303,14 +317,14 @@ apply_update(test,
 apply_update(test,
   "apply, auto-vivify",
   { c: 2 },
-  { a: { b: { '$apply': function(val) { return 5 } } } },
+  { a: { b: { '$apply': function(val) { test.deepEqual(val, undefined, "$apply value not autovified as undefined"); return 5 } } } },
   { a: { b: 5 }, c: 2 }
 );
 
 apply_update(test,
   "apply, auto-vivify null",
   { a: { b: null }, c: 2 },
-  { a: { b: { '$apply': function(val) { return 5 } } } },
+  { a: { b: { '$apply': function(val) { test.deepEqual(val, null, "$apply value not null as expected"); return 5 } } } },
   { a: { b: 5 }, c: 2 }
 );
 
