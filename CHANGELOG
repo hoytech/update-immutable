@@ -1,3 +1,9 @@
+1.5.0  2018-09-13
+  * $apply was incorrectly auto-vivifying its values to {} when they
+    were null or undefined. This is technically a breaking change, but
+    it's very unlikely anyone was relying on this buggy behaviour.
+    (thanks George Kormaris)
+
 1.4.0  2017-11-17
   * Support using $unset and $merge at same level as each-other, as
     well as recursion at the same level.
