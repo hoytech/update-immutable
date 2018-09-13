@@ -70,18 +70,16 @@ export default function update(view, upd) {
   }
 
   if (upd.hasOwnProperty('$apply')) {
-    if (view === undefined || view === null) view = {};
     if (typeof(upd['$apply']) !== 'function') throw(new Error("update is not a function in apply"));
 
     let new_view;
 
-    if (Array.isArray(view) || typeof(view) === 'object') {
+    if (Array.isArray(view) || (typeof(view) === 'object' && view !== null)) {
       new_view = shallowCopy(view);
     } else if (view !== Object(view)) {
       new_view = view;
     }
 
-    if (new_view === undefined) throw(new Error("view is not an object, array or primitive"));
     return upd['$apply'](new_view);
   }
 

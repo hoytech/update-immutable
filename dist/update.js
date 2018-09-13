@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.default = update;
 exports.updatePath = updatePath;
@@ -145,18 +145,16 @@ function update(view, upd) {
   }
 
   if (upd.hasOwnProperty('$apply')) {
-    if (view === undefined || view === null) view = {};
     if (typeof upd['$apply'] !== 'function') throw new Error("update is not a function in apply");
 
     var _new_view4 = void 0;
 
-    if (Array.isArray(view) || (typeof view === 'undefined' ? 'undefined' : _typeof(view)) === 'object') {
+    if (Array.isArray(view) || (typeof view === 'undefined' ? 'undefined' : _typeof(view)) === 'object' && view !== null) {
       _new_view4 = shallowCopy(view);
     } else if (view !== Object(view)) {
       _new_view4 = view;
     }
 
-    if (_new_view4 === undefined) throw new Error("view is not an object, array or primitive");
     return upd['$apply'](_new_view4);
   }
 
